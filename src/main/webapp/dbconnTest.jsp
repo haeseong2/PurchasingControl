@@ -15,6 +15,7 @@
 	} catch(SQLException ex) {
 		out.println("커넥션 실패 : " + ex.getMessage());
 		out.println("커넥션 실패 : " + ex.getMessage());
+		out.println("커넥션 실패 : " + ex.getMessage());
 		application.log("커넥션 연결 실패", ex);
 	}
 %>
