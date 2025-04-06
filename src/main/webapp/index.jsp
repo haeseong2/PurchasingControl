@@ -12,7 +12,7 @@
 <div class="container text-center mt-5">
   <h1>ERP 시스템</h1>
   <button class="btn btn-primary me-2" onclick="$('#loginModal').modal('show')">로그인</button>
-  <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입!</button> 
+  <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입</button> 
 </div>
 
 <!-- 로그인/회원가입 모달 include -->
