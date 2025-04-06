@@ -12,6 +12,7 @@
 <%
 	try(Connection conn = ConnectionProvider.getConnection()) {
 		out.println("커넥션 성공");
+		out.println("커넥션 성공");
 	} catch(SQLException ex) {
 		out.println("커넥션 실패 : " + ex.getMessage());
 		out.println("커넥션 실패 : " + ex.getMessage());
