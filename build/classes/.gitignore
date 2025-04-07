@@ -1,2 +1,4 @@
-/Purchase/
-/view/
+/controller/
+/jdbc/
+/model/
+/purchaseRequest/
