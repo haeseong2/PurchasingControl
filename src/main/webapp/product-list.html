@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 목록 및 관리</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; display: flex; justify-content: center; }
+        .container { width: 800px; display: flex; flex-direction: column; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .card h2 { margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background: #f8f8f8; }
+        .form-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        .form-group input { padding: 5px; flex: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>제품 목록 및 관리</h1>
+        <div class="card">
+            <h2>제품 리스트 조회</h2>
+            <div class="form-group">
+                <input type="text" id="search-name" placeholder="제품명 검색">
+                <input type="date" id="search-date">
+                <input type="text" id="search-client" placeholder="거래처 검색">
+                <button onclick="filterProducts()">검색</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>가격</th>
+                        <th>재고</th>
+                        <th>일자</th>
+                        <th>거래처</th>
+                    </tr>
+                </thead>
+                <tbody id="product-table">
+                    <!-- 서버 데이터 삽입 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let allProducts = []; // 전체 제품 데이터 저장
+
+        function fetchProducts() {
+            fetch('/ProductManagementUI/products')
+                .then(response => response.json())
+                .then(products => {
+                    allProducts = products;
+                    renderProducts(products);
+                })
+                .catch(error => console.error("데이터 불러오기 오류:", error));
+        }
+
+        function renderProducts(products) {
+            const tableBody = document.getElementById("product-table");
+            tableBody.innerHTML = "";
+            products.forEach(product => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.price}원</td>
+                    <td>${product.stock || "정보 없음"}</td>
+                    <td>${product.date || "-"}</td>
+                    <td>${product.client || "-"}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function filterProducts() {
+            const name = document.getElementById("search-name").value.toLowerCase();
+            const date = document.getElementById("search-date").value;
+            const client = document.getElementById("search-client").value.toLowerCase();
+
+            const filtered = allProducts.filter(product => 
+                (name === "" || product.name.toLowerCase().includes(name)) &&
+                (date === "" || product.date === date) &&
+                (client === "" || product.client.toLowerCase().includes(client))
+            );
+
+            renderProducts(filtered);
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>

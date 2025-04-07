@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 상세</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h2 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>제품 상세</h2>
+
+        <div class="form-group">
+            <label>제품명</label>
+            <input type="text" id="productName" value="상품 A">
+        </div>
+
+        <div class="form-group">
+            <label>설명</label>
+            <input type="text" id="productDesc" value="이 제품은 고품질입니다.">
+        </div>
+
+        <div class="form-group">
+            <label>가격</label>
+            <input type="number" id="productPrice" value="10000">
+        </div>
+
+        <div class="form-group">
+            <label>재고</label>
+            <input type="number" id="productStock" value="10">
+        </div>
+
+        <button onclick="saveChanges()">수정 완료</button>
+    </div>
+
+    <script>
+        function saveChanges() {
+            alert("제품 정보가 수정되었습니다!"); 
+        }
+    </script>
+
+</body>
+</html>
