@@ -1,4 +1,4 @@
-package model.dto;
+package view.model.dto;
 
 public class UserDTO {
 	private String username;
