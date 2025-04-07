@@ -1,4 +1,6 @@
 /controller/
-/jdbc/
 /model/
-/purchaseRequest/
+/view/
+/product/
+/requestManagement/
+/purchase/

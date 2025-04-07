@@ -1,11 +1,11 @@
-package model.dao;
+package view.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import jdbc.connection.ConnectionProvider;
-import model.dto.UserDTO;
+import view.model.dto.UserDTO;
 
 public class UserDAO {
 

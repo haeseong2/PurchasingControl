@@ -1,5 +1,4 @@
-package controller;
-
+package view.controller;
 
 import java.io.IOException;
 
@@ -7,16 +6,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import model.dao.UserDAO;
-import model.dto.UserDTO;
+import view.model.dao.UserDAO;
 
-public class RegisterServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET not supported.");
+        // GET 요청으로 접근 시 로그인 페이지로 포워딩 (또는 에러 처리 가능)
+        request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
 
     @Override
@@ -27,13 +27,14 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UserDAO dao = new UserDAO();
-        UserDTO user = new UserDTO(username, password);
-        boolean registered = dao.registerUser(user);
+        boolean isValid = dao.validateUser(username, password);
 
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
-        if (registered) {
+        if (isValid) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", username);
             response.getWriter().write("success");
         } else {
             response.getWriter().write("fail");
