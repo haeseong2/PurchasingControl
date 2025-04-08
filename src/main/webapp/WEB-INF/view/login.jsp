@@ -23,7 +23,7 @@
       </div>
       <div class="modal-body">
         <ul class="list-group">
-          <li class="list-group-item"><a href="#">제품</a></li>
+          <li class="list-group-item"><a href="product.do">제품</a></li>
           <li class="list-group-item"><a href="#">요청</a></li>
           <% if ("A".equals(userStatus)) { %>
           <li class="list-group-item"><a href="#">요청승인</a></li>
