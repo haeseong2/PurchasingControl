@@ -15,9 +15,9 @@
 		<param-name>poolConfig</param-name>
 		<param-value>
   	jdbcdriver=oracle.jdbc.driver.OracleDriver
-  	jdbcUrl=jdbc:oracle:thin:@localhost:1521:xe
-  	dbUser=system
-  	dbPass=1234
+  	jdbcUrl=jdbc:oracle:thin:@211.245.48.159:1521:xe
+  	dbUser=DEKIRU
+  	dbPass=DEKIRU
   	validationQuery=select 1
   	minIdle=3
   	maxTotal=30
