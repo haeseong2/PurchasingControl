@@ -16,7 +16,7 @@ public class RegisterHandler implements CommandHandler {
         String name     = request.getParameter("name");
         String email    = request.getParameter("email");
         String password = request.getParameter("password");
-        String status   = request.getParameter("status");
+        String status   = request.getParameter("role");
         
         // 
         if(status.equals("관리자")) {
