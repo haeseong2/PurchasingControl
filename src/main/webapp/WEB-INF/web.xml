@@ -4,29 +4,7 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	id="WebApp_ID" version="4.0">
 	<display-name>PurchasingControl</display-name>
-
-
-
-	<listener>
-		<listener-class>jdbc.DBCPInitListener</listener-class>
-	</listener>
-
-	<context-param>
-		<param-name>poolConfig</param-name>
-		<param-value>
-  	jdbcdriver=oracle.jdbc.driver.OracleDriver
-  	jdbcUrl=jdbc:oracle:thin:@211.245.48.159:1521:xe
-  	dbUser=DEKIRU
-  	dbPass=DEKIRU
-  	validationQuery=select 1
-  	minIdle=3
-  	maxTotal=30
-  	poolName=purchase
-  		</param-value>
-	</context-param>
-
-
-
+	
 	<servlet>
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>view.controller.FrontController</servlet-class>
