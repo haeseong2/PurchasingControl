@@ -25,4 +25,15 @@ public class UserDTO {
 
     public String getPassword() { return password; }  // getPw() -> getPassword()로 변경
     public void setPassword(String password) { this.password = password; }  // setPw() -> setPassword()로 변경
+    
+	@Override
+	public String toString() {
+		return "UserDTO [id=" + id + ", userName=" + userName + ", userEmail=" + userEmail + ", userStatus="
+				+ userStatus + ", departmentId=" + departmentId + ", password=" + password + ", getId()=" + getId()
+				+ ", getUserName()=" + getUserName() + ", getUserEmail()=" + getUserEmail() + ", getUserStatus()="
+				+ getUserStatus() + ", getDepartmentId()=" + getDepartmentId() + ", getPassword()=" + getPassword()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
+    
 }

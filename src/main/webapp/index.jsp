@@ -18,6 +18,7 @@
   %>
     <button class="btn btn-primary me-2" onclick="$('#loginModal').modal('show')">로그인</button>
     <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입</button>
+    <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입2</button>
   <%
     } else {
   %>
