@@ -37,27 +37,36 @@
 
 <!-- login.jsp -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <form action="login" method="post">
-    <div class="modal-dialog">
-      <div class="modal-content">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form action="login.do" method="post">
         <div class="modal-header">
           <h5 class="modal-title" id="loginModalLabel">로그인</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body px-4 text-start">
           <div class="mb-3">
-            <label for="loginMid" class="form-label">아이디</label>
-            <input type="text" class="form-control" id="loginMid" name="mid" required>
+            <label class="form-label">아이디</label>
+            <input type="text" name="username" class="form-control" required />
           </div>
           <div class="mb-3">
-            <label for="loginMpw" class="form-label">비밀번호</label>
-            <input type="password" class="form-control" id="loginMpw" name="mpw" required>
+            <label class="form-label">비밀번호</label>
+            <input type="password" name="password" class="form-control" required />
           </div>
+
+          <%
+              String error = (String) request.getAttribute("error");
+              if (error != null) {
+          %>
+              <div class="alert alert-danger mt-2"><%= error %></div>
+          <%
+              }
+          %>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary w-100">로그인</button>
+          <button type="submit" class="btn btn-primary">로그인</button>
         </div>
-      </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
