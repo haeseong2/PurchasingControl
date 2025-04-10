@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,16 +39,15 @@
                     <th>가격</th>
                     <th>재고</th>
                 </tr>
+                <c:forEach var="product" items="${product}">
                 <tr>
-                    <td>상품 A</td>
-                    <td>10,000원</td>
-                    <td>10</td>
+					<td>${product.productId}</td>
+					<td>${product.productName}</td>
+					<td>${product.productDescription}</td>
+					<td>${product.productPrice}</td>
+					<td>${product.productQuantity}</td>
                 </tr>
-                <tr>
-                    <td>상품 B</td>
-                    <td>20,000원</td>
-                    <td>5</td>
-                </tr>
+                </c:forEach>
             </table>
         </div>
         <div class="card">
