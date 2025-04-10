@@ -12,7 +12,7 @@
 <div class="container text-center mt-5">
   <h1>구매관리 시스템</h1>
 
-  <%
+  <% 
     String username = (String) session.getAttribute("user");
     if (username == null) {
   %>
