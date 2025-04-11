@@ -21,7 +21,8 @@ public class LoginHandler implements CommandHandler {
             // 로그인 성공 시 세션에 사용자 정보를 저장
             HttpSession session = request.getSession();
             session.setAttribute("user", username);  // 로그인한 사용자 정보 세션에 저장
-
+            
+            
             request.setAttribute("loginSuccess", true);
             return "index.jsp"; // 로그인 성공 후 index 페이지로 리다이렉트
         } else {

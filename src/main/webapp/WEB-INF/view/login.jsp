@@ -1,17 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
   String userStatus = (String) session.getAttribute("user_status");
-  if (userStatus == null) userStatus = "U"; // 기본은 일반 사용자
+  if (userStatus == null) userStatus = "1"; // 기본은 일반 사용자
 %>
 
-<!-- 상단 네비게이션 버튼 -->
-<nav class="navbar navbar-light bg-light">
-  <div class="container-fluid justify-content-end">
-    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#menuModal">
-      <i class="bi bi-list"></i>
-    </button>
-  </div>
-</nav>
+
 
 <!-- 메뉴 모달 -->
 <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
