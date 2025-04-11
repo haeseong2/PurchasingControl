@@ -45,15 +45,18 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <ul class="list-group">
-      <li class="list-group-item">제품</li>
-      <li class="list-group-item">요청</li>
-      <% if ("0".equals(userRole)) { %>
-        <li class="list-group-item">승인관리</li>
-        <li class="list-group-item">발주</li>
-        <li class="list-group-item">환불</li>
-      <% } %>
-    </ul>
+<ul class="list-group">
+  <% if ("0".equals(userRole)) { %>
+    <!-- 관리자 전용 메뉴 -->
+    <li class="list-group-item"><a href="approval.do">승인관리</a></li>
+    <li class="list-group-item"><a href="order.do">발주</a></li>
+    <li class="list-group-item"><a href="refund.do">환불</a></li>
+  <% } else { %>
+    <!-- 일반 사용자 메뉴 -->
+    <li class="list-group-item"><a href="list.do">제품</a></li>
+    <li class="list-group-item"><a href="request.do">요청</a></li>
+  <% } %>
+</ul>
   </div>
 </div>
 
