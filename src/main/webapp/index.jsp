@@ -18,7 +18,6 @@
   %>
     <button class="btn btn-primary me-2" onclick="$('#loginModal').modal('show')">로그인</button>
     <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입</button>
-    <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입2</button>
   <%
     } else {
   %>
@@ -40,7 +39,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공</h5>
+        <h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공  </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
