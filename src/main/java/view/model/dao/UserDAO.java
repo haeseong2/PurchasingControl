@@ -51,4 +51,28 @@ public class UserDAO {
         }
         return isValid;
     }
+    
+    public UserDTO getUserByIdAndPw(String id, String password) {
+        UserDTO user = null;
+        String sql = "SELECT USER_STATUS FROM USER_INFO WHERE USER_ID = ? AND USER_PW = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, id);
+            pstmt.setString(2, password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new UserDTO();
+                    user.setUserStatus(rs.getString("USER_STATUS"));       // "0" or "1"
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }
+
+
+
