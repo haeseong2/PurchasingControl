@@ -191,7 +191,7 @@ th {
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">요청이 완료되었습니다.</div>
+			<div class="modal-body">요청이 확인되었습니다.</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal">닫기</button>
@@ -210,7 +210,7 @@ th {
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">형식이 맞지 않습니다.</div>
+			<div class="modal-body">요청이 실패하였습니다. 다시 확인하여 주십시오.</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal">닫기</button>
