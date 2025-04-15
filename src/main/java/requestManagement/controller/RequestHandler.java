@@ -18,14 +18,14 @@ public class RequestHandler implements CommandHandler {
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("RequestHandler 접근 성공");
 		HttpSession session = request.getSession();
-		
+
 		String id = (String) session.getAttribute("user");
 		String requestStatus = request.getParameter("requestStatus");
 		String productId = request.getParameter("productId");
 		String quantity = request.getParameter("quantity");
 		String reason = request.getParameter("reason");
 
-		System.out.println("id : "+ id);
+		System.out.println("id : " + id);
 		System.out.println("requestStatus :" + requestStatus);
 		System.out.println("productId :" + productId);
 		System.out.println("quantity :" + quantity);
@@ -37,25 +37,46 @@ public class RequestHandler implements CommandHandler {
 		req.setProductId(productId);
 		req.setRequestQuantity(quantity);
 		req.setRequestReason(reason);
+		
 
 		RequestDAO dao = new RequestDAO();
 		int result = dao.insertRequest(req);
 
+		ProductDAO dao2 = new ProductDAO();
+
 		System.out.println("result : " + result);
-		
+
+		List<ProductDTO> product = dao2.selectProduct();
+		request.setAttribute("product", product);
+
 		if (result > 0) {
-			request.setAttribute("requestSuccess", true); // 요청 성공 시
-			ProductDAO dao2 = new ProductDAO();
-			List<ProductDTO>product = null;
-	        product = dao2.selectProduct();
-	        System.out.println("product : "+ product);
-	        
-	        request.setAttribute("product", product);
+
+			int minusResult = dao2.decreaseQuantity(productId, quantity);
+			System.out.println("재고 차감 결과: " + minusResult);
+
+			if (minusResult > 0) {
+				// 재고 차감 성공
+				session.setAttribute("decreased_" + productId, true);
+				session.setAttribute("requestSuccess", true);
+				response.sendRedirect(request.getContextPath() + "/list.do");
+				return null;
+			} else if (minusResult == 0) {
+				// 재고와 요청 수량이 일치한 상태
+				session.setAttribute("requestSuccess", true);
+				response.sendRedirect(request.getContextPath() + "/list.do");
+				return null;
+			} else {
+				// 재고 부족 또는 오류
+				session.setAttribute("requestFail", true);
+				response.sendRedirect(request.getContextPath() + "/list.do");
+				return null;
+			}
+
 		} else {
-			request.setAttribute("requestFail", true); // 실패 시
+			session.setAttribute("requestFail", true);
+			System.out.println("재고 차감 불가");
+			response.sendRedirect(request.getContextPath() + "/list.do");
+			return null;
 		}
-
-		return "/WEB-INF/product/productList.jsp";
-
 	}
 }
