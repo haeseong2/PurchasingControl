@@ -112,6 +112,8 @@
     $(document).ready(function () {
       $('#registerSuccessModal').modal('show');
     });
+    
+    	
   <% } %>
 
   <% if (request.getAttribute("loginFail") != null && (boolean) request.getAttribute("loginFail")) { %>

@@ -7,13 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import product.dao.ProductDAO;
 import product.dto.ProductDTO;
+import requestManagement.dao.RequestDAO;
+import requestManagement.dto.RequestDTO;
 import view.command.CommandHandler;
 
 public class ProductListHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ProductListHandler 접근 성공");
-        request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
         ProductDAO dao = new ProductDAO();
         List<ProductDTO>product = null;
         product = dao.selectProduct();

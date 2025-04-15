@@ -38,11 +38,6 @@ public class RequestHandler implements CommandHandler {
 		req.setRequestQuantity(quantity);
 		req.setRequestReason(reason);
 		
-		if (session.getAttribute("decreased_" + productId) != null) {
-		    System.out.println("이미 처리된 요청입니다.");
-		    response.sendRedirect(request.getContextPath() + "/list.do");
-		    return null;
-		}
 
 		RequestDAO dao = new RequestDAO();
 		int result = dao.insertRequest(req);
@@ -62,24 +57,23 @@ public class RequestHandler implements CommandHandler {
 			if (minusResult > 0) {
 				// 재고 차감 성공
 				session.setAttribute("decreased_" + productId, true);
-				request.setAttribute("requestSuccess", true);
+				session.setAttribute("requestSuccess", true);
 				response.sendRedirect(request.getContextPath() + "/list.do");
 				return null;
 			} else if (minusResult == 0) {
 				// 재고와 요청 수량이 일치한 상태
-				request.setAttribute("requestSuccess", true);
+				session.setAttribute("requestSuccess", true);
 				response.sendRedirect(request.getContextPath() + "/list.do");
 				return null;
 			} else {
 				// 재고 부족 또는 오류
-				request.setAttribute("requestFail", true);
-				request.setAttribute("errorMessage", "요청을 처리할 수 없습니다.");
+				session.setAttribute("requestFail", true);
 				response.sendRedirect(request.getContextPath() + "/list.do");
 				return null;
 			}
 
 		} else {
-			request.setAttribute("requestFail", true);
+			session.setAttribute("requestFail", true);
 			System.out.println("재고 차감 불가");
 			response.sendRedirect(request.getContextPath() + "/list.do");
 			return null;
