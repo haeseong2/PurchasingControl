@@ -15,12 +15,7 @@ public class ProductListHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ProductListHandler 접근 성공");
-<<<<<<< HEAD
         request.setCharacterEncoding("UTF-8");
-      
-=======
-		request.setCharacterEncoding("UTF-8");
->>>>>>> Development
         ProductDAO dao = new ProductDAO();
         
 		List<ProductDTO> product = dao.selectProduct();

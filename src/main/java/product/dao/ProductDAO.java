@@ -64,8 +64,7 @@ public class ProductDAO {
 	        }
 	        return productList;
 	    }
-<<<<<<< HEAD
-=======
+
 	    public int decreaseQuantity(String productId, String quantity) throws Exception{
 	        String sql = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_id = ?";
 	        
@@ -76,7 +75,5 @@ public class ProductDAO {
 	            return pstmt.executeUpdate();
 	        }
 	    }
-	    
-	    
->>>>>>> Development
+
 }
