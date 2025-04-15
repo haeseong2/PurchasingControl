@@ -65,6 +65,8 @@ public class UserDAO {
                 if (rs.next()) {
                     user = new UserDTO();
                     user.setUserStatus(rs.getString("USER_STATUS"));       // "0" or "1"
+                    String a = rs.getString("USER_STATUS");
+                    System.out.println("a 접근 성공" + a);
                 }
             }
         } catch (Exception e) {

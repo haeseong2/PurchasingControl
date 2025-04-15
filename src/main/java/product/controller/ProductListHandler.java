@@ -14,9 +14,10 @@ public class ProductListHandler implements CommandHandler {
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("ProductListHandler 접근 성공");
         request.setCharacterEncoding("UTF-8");
+      
         ProductDAO dao = new ProductDAO();
-        List<ProductDTO>product = null;
-        product = dao.selectProduct();
+        
+		List<ProductDTO> product = dao.selectProduct();
         System.out.println("product : "+ product);
         
         request.setAttribute("product", product);
