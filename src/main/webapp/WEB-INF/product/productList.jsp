@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+response.setDateHeader("Expires", 0); // Proxies
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -146,7 +151,7 @@ th {
 			</table>
 		</div>
 	</div>
-</body>
+
 
 <!-- 구매요청 모달 -->
 <div class="modal fade" id="requestModal" tabindex="-1"
@@ -193,6 +198,7 @@ th {
 			</div>
 			<div class="modal-body">요청이 확인되었습니다.</div>
 			<div class="modal-footer">
+				<a href="requestcheck.do" class="btn btn-primary">내 구매 요청 목록</a>
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal">닫기</button>
 			</div>
@@ -223,18 +229,22 @@ th {
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <script>
 	// 요청 성공 시 모달 띄우기
-<%if (request.getAttribute("requestSuccess") != null && (boolean) request.getAttribute("requestSuccess")) {%>
+<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
 	$(document).ready(function() {
 		$('#RequestSuccessModal').modal('show');
 	});
+<% session.removeAttribute("requestSuccess"); %>
 <%}%>
 	// 요청 실패 시 모달 띄우기
-<%if (request.getAttribute("requestFail") != null && (boolean) request.getAttribute("requestFail")) {%>
+<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
 	$(document).ready(function() {
 		$('#RequestFailModal').modal('show');
 	});
+	<% session.removeAttribute("requestFail"); %>
+	
 <%}%>
 	function requestModal(productId, productQuantity) {
 		console.log("productId : " + productId);
@@ -249,4 +259,5 @@ th {
 		$('#requestModal').modal('show');
 	}
 </script>
+</body>
 </html>

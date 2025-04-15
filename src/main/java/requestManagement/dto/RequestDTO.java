@@ -7,6 +7,7 @@ public class RequestDTO {
 	private String requestQuantity;
 	private String requestStatus;
 	private String requestReason;
+	private String requestDate;
 	public String getRequestId() {
 		return requestId;
 	}
@@ -43,9 +44,16 @@ public class RequestDTO {
 	public void setRequestReason(String requestReason) {
 		this.requestReason = requestReason;
 	}
+	
+	public String getRequestDate() {
+		return requestDate;
+	}
+	public void setRequestDate(String requestDate) {
+		this.requestDate = requestDate;
+	}
 	public RequestDTO() {}
 	public RequestDTO(String requestId, String id, String productId, String requestQuantity, String requestStatus,
-			String requestReason) {
+			String requestReason, String requestDate) {
 		super();
 		this.requestId = requestId;
 		this.id = id;
@@ -53,16 +61,19 @@ public class RequestDTO {
 		this.requestQuantity = requestQuantity;
 		this.requestStatus = requestStatus;
 		this.requestReason = requestReason;
+		this.requestDate = requestDate;
 	}
 	@Override
 	public String toString() {
 		return "RequestDTO [requestId=" + requestId + ", id=" + id + ", productId=" + productId + ", requestQuantity="
 				+ requestQuantity + ", requestStatus=" + requestStatus + ", requestReason=" + requestReason
-				+ ", getRequestId()=" + getRequestId() + ", getId()=" + getId() + ", getProductId()=" + getProductId()
-				+ ", getRequestQuantity()=" + getRequestQuantity() + ", getRequestStatus()=" + getRequestStatus()
-				+ ", getRequestReason()=" + getRequestReason() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+				+ ", requestDate=" + requestDate + ", getRequestId()=" + getRequestId() + ", getId()=" + getId()
+				+ ", getProductId()=" + getProductId() + ", getRequestQuantity()=" + getRequestQuantity()
+				+ ", getRequestStatus()=" + getRequestStatus() + ", getRequestReason()=" + getRequestReason()
+				+ ", getRequestDate()=" + getRequestDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
 	}
+
 	
 	
 }
