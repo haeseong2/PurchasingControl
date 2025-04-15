@@ -42,6 +42,7 @@ public class ProductDAO {
 	        return result;
 	    }
 	    
+	    //전체 상품 조회
 	    public List<ProductDTO> selectProduct() {
 	    	System.out.println("ProductDAO 접근 성공");
 	        String sql = "SELECT * FROM PRODUCT";
@@ -64,6 +65,8 @@ public class ProductDAO {
 	        }
 	        return productList;
 	    }
+	    
+	    //상품 수량 감소
 	    public int decreaseQuantity(String productId, String quantity) throws Exception{
 	        String sql = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_id = ?";
 	        
@@ -74,6 +77,6 @@ public class ProductDAO {
 	            return pstmt.executeUpdate();
 	        }
 	    }
-	    
-	    
+
+	   
 }

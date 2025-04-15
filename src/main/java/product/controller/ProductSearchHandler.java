@@ -18,7 +18,6 @@ public class ProductSearchHandler implements CommandHandler {
 
 		// 입력 값 받기
 		String keyword = request.getParameter("keyword");
-
 		List<ProductDTO> searchResult = null;
 
 		if (keyword == null || keyword.trim().isEmpty()) {
@@ -35,7 +34,6 @@ public class ProductSearchHandler implements CommandHandler {
 
 		// searchResult를 JSP로 전달
 		request.setAttribute("searchResult", searchResult);
-
 		return "/WEB-INF/product/productList.jsp";
 	}
 }
