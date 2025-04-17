@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>내 구매 요청 내역</title>
+<title>구매 요청 내역(관리자용)</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@ th {
 </head>
 <body>
 	<div class="container">
-		<h2>내 구매 요청 내역</h2>
+		<h2>구매 요청 내역(관리자용)</h2>
 		<table>
 			<tr>
 				<th>요청 ID</th>
@@ -67,8 +67,8 @@ th {
 				<th>상태</th>
 			</tr>
 			<c:choose>
-				<c:when test="${not empty checkResult}">
-					<c:forEach var="request" items="${checkResult}">
+				<c:when test="${not empty adminCheck}">
+					<c:forEach var="request" items="${adminCheck}">
 						<tr>
 							<td>${request.requestId}</td>
 							<td>${request.id}</td>
