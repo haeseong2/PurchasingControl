@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
 response.setHeader("Pragma", "no-cache"); // HTTP 1.0
@@ -233,41 +234,41 @@ th {
 		</div>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-	<script>
-		// 요청 성공 시 모달 띄우기
-	<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
-		$(document).ready(function() {
-			$('#RequestSuccessModal').modal('show');
-		});
-	<%session.removeAttribute("requestSuccess");%>
-		
-	<%}%>
-		// 요청 실패 시 모달 띄우기
-	<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
-		$(document).ready(function() {
-			$('#RequestFailModal').modal('show');
-		});
-	<%session.removeAttribute("requestFail");%>
-		
-	<%}%>
-		function requestModal(productId, productQuantity) {
-			console.log("productId : " + productId);
-			console.log("productQuantity : " + productQuantity);
-
-			$('#quantity').attr({
-				min : 1,
-				max : parseInt(productQuantity),
-				value : 1
+		<script>
+			// 요청 성공 시 모달 띄우기
+		<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
+			$(document).ready(function() {
+				$('#RequestSuccessModal').modal('show');
 			});
-			$('#productId').val(productId);
-			$('#requestModal').modal('show');
-		}
-	</script>
-	<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
+		<%session.removeAttribute("requestSuccess");%>
+			
+		<%}%>
+			// 요청 실패 시 모달 띄우기
+		<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
+			$(document).ready(function() {
+				$('#RequestFailModal').modal('show');
+			});
+		<%session.removeAttribute("requestFail");%>
+			
+		<%}%>
+			function requestModal(productId, productQuantity) {
+				console.log("productId : " + productId);
+				console.log("productQuantity : " + productQuantity);
+
+				$('#quantity').attr({
+					min : 1,
+					max : parseInt(productQuantity),
+					value : 1
+				});
+				$('#productId').val(productId);
+				$('#requestModal').modal('show');
+			}
+		</script>
+		<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 </html>

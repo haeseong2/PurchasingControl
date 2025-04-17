@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-  String userStatus = (String) session.getAttribute("user_status");
+  String userStatus = (String) session.getAttribute("userRole");
   if (userStatus == null) userStatus = "1"; // 기본은 일반 사용자
 %>
 

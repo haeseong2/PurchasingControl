@@ -95,6 +95,7 @@
     });
   <% } %>
 </script>
+<jsp:include page="/WEB-INF/view/register.jsp" />
 <jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 </html>
