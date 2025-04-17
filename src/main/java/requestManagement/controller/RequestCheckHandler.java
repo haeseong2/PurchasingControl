@@ -10,11 +10,13 @@ import requestManagement.dto.RequestDTO;
 import view.command.CommandHandler;
 
 public class RequestCheckHandler implements CommandHandler {
+
+	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("RequestCheckHandler 접근 성공");
         request.setCharacterEncoding("UTF-8");
         
-        String id = (String) request.getSession().getAttribute("user_id");
+        String id = (String) request.getSession().getAttribute("user");
         System.out.println("로그인한 사용자 ID: " + id);
         
         RequestDAO dao = new RequestDAO();
