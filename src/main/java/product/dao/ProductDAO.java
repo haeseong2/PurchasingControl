@@ -63,12 +63,7 @@ public class ProductDAO {
 	        }
 	        return productList;
 	    }
-<<<<<<< HEAD
-	    
-	    //상품 수량 감소
-=======
 
->>>>>>> Development
 	    public int decreaseQuantity(String productId, String quantity) throws Exception{
 	        String sql = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_id = ?";
 	        
@@ -80,8 +75,4 @@ public class ProductDAO {
 	        }
 	    }
 
-<<<<<<< HEAD
-	   
-=======
->>>>>>> Development
 }

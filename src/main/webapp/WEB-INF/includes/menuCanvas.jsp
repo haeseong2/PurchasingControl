@@ -12,13 +12,9 @@
 <ul class="list-group">
   <% if ("0".equals(userRole)) { %>
     <!-- 관리자 전용 메뉴 -->
-<<<<<<< HEAD
-    <li class="list-group-item"><a href="#">구매요청관리</a></li>
     <li class="list-group-item"><a href="addProduct.do">제품등록</a></li>
-=======
     <li class="list-group-item"><a href="requestAdmin.do">구매요청관리</a></li>
     <li class="list-group-item"><a href="#">제품등록</a></li>
->>>>>>> Development
     <li class="list-group-item"><a href="#">발주</a></li>
   <% } else { %>
     <!-- 일반 사용자 메뉴 -->
