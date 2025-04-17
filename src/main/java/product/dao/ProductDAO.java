@@ -34,7 +34,6 @@ public class ProductDAO {
 	            pstmt.setString(3, product.getProductPrice());
 	            pstmt.setString(4, product.getProductQuantity());
 
-
 	            result = pstmt.executeUpdate();
 	        } catch (Exception e) {
 	            e.printStackTrace();
