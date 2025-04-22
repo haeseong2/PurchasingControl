@@ -3,6 +3,7 @@ package product.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class ProductDAO {
 	            pstmt.setString(3, product.getProductPrice());
 	            pstmt.setString(4, product.getProductQuantity());
 
-
 	            result = pstmt.executeUpdate();
 	        } catch (Exception e) {
 	            e.printStackTrace();
@@ -63,7 +63,16 @@ public class ProductDAO {
 	        }
 	        return productList;
 	    }
-	    
-	    
-	    
+
+	    public int decreaseQuantity(String productId, String quantity) throws Exception{
+	        String sql = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_id = ?";
+	        
+	        try (Connection conn = getConnection();
+	        		PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	            pstmt.setInt(1, Integer.parseInt(quantity));   // 문자열을 int로 변환
+	            pstmt.setString(2, productId);                 // productId는 그대로 문자열
+	            return pstmt.executeUpdate();
+	        }
+	    }
+
 }

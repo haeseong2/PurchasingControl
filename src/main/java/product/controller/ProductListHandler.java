@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import product.dao.ProductDAO;
 import product.dto.ProductDTO;
+import requestManagement.dao.RequestDAO;
+import requestManagement.dto.RequestDTO;
 import view.command.CommandHandler;
 
 public class ProductListHandler implements CommandHandler {
@@ -15,8 +17,8 @@ public class ProductListHandler implements CommandHandler {
 		System.out.println("ProductListHandler 접근 성공");
         request.setCharacterEncoding("UTF-8");
         ProductDAO dao = new ProductDAO();
-        List<ProductDTO>product = null;
-        product = dao.selectProduct();
+        
+		List<ProductDTO> product = dao.selectProduct();
         System.out.println("product : "+ product);
         
         request.setAttribute("product", product);

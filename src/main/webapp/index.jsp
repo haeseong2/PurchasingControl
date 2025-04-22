@@ -6,9 +6,10 @@
   <meta charset="UTF-8">
   <title>구매관리 시스템</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head> 
   <style>
     .offcanvas-end {
-      width: 260px;
+      width: 260px; 
     }
   </style>
 </head>
@@ -30,36 +31,12 @@
   %>
     <p><strong><%= username %></strong> 님 환영합니다.</p>
     <a href="logout.do" class="btn btn-danger">로그아웃</a>
-    <button class="btn btn-outline-secondary ms-2" data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">
-      ☰ 카테고리
-    </button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰ 카테고리</button>
   <%
     }
   %>
 </div>
 
-<!-- 사이드 메뉴 -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="menuCanvas" aria-labelledby="menuCanvasLabel">
-  <div class="offcanvas-header">
-    <h5 id="menuCanvasLabel">카테고리</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-<ul class="list-group">
-  <% if ("0".equals(userRole)) { %>
-    <!-- 관리자 전용 메뉴 -->
-    <li class="list-group-item"><a href="approval.do">승인관리</a></li>
-    <li class="list-group-item"><a href="order.do">발주</a></li>
-    <li class="list-group-item"><a href="refund.do">환불</a></li>
-    <li class="list-group-item"><a href="list.do">제품</a></li>
-  <% } else { %>
-    <!-- 일반 사용자 메뉴 -->
-    <li class="list-group-item"><a href="list.do">제품</a></li>
-    <li class="list-group-item"><a href="request.do">요청</a></li>
-  <% } %>
-</ul>
-  </div>
-</div>
 
 <!-- 로그인 모달 -->
 <jsp:include page="/WEB-INF/view/login.jsp" />
@@ -108,6 +85,8 @@
     $(document).ready(function () {
       $('#registerSuccessModal').modal('show');
     });
+    
+    	
   <% } %>
 
   <% if (request.getAttribute("loginFail") != null && (boolean) request.getAttribute("loginFail")) { %>
@@ -116,7 +95,8 @@
     });
   <% } %>
 </script>
-
+<jsp:include page="/WEB-INF/view/register.jsp" />
+<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 </html>
 

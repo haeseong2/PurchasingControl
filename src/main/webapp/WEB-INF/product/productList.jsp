@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+response.setDateHeader("Expires", 0); // Proxies
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -68,6 +74,14 @@ th {
 </style>
 </head>
 <body>
+	<div style="position: absolute; top: 20px; right: 20px;">
+		<a href="index.jsp" class="btn btn-primary">시작 페이지로</a>
+		<button class="btn btn-primary" type="button"
+			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
+			카테고리</button>
+	</div>
+
+
 	<div class="container">
 		<h1>제품 목록 및 관리</h1>
 		<div class="card">
@@ -146,107 +160,115 @@ th {
 			</table>
 		</div>
 	</div>
-</body>
 
-<!-- 구매요청 모달 -->
-<div class="modal fade" id="requestModal" tabindex="-1"
-	aria-labelledby="joinModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="request.do" method="post">
+
+	<!-- 구매요청 모달 -->
+	<div class="modal fade" id="requestModal" tabindex="-1"
+		aria-labelledby="joinModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form action="request.do" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title" id="joinModalLabel">구매 요청</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="mb-3">
+							<label for="quantity" class="form-label">수량</label> <input
+								type="number" class="form-control" id="quantity" name="quantity"
+								required>
+						</div>
+						<div class="mb-3">
+							<label for="reason" class="form-label">요청 사유</label>
+							<textarea class="form-control" id="reason" name="reason" rows="3"
+								required></textarea>
+						</div>
+					</div>
+					<input type="hidden" id="productId" name="productId"> <input
+						type="hidden" id="requestStatus" name="requestStatus" value="0">
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">요청하기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- 요청 성공 모달 -->
+	<div class="modal fade" id="RequestSuccessModal" tabindex="-1"
+		aria-labelledby="RequestSuccessModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="joinModalLabel">구매 요청</h5>
+					<h5 class="modal-title" id="requestSuccessModalLabel">요청 성공</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
-					<div class="mb-3">
-						<label for="quantity" class="form-label">수량</label> <input
-							type="number" class="form-control" id="quantity" name="quantity"
-							required>
-					</div>
-					<div class="mb-3">
-						<label for="reason" class="form-label">요청 사유</label>
-						<textarea class="form-control" id="reason" name="reason" rows="3"
-							required></textarea>
-					</div>
-				</div>
-				<input type="hidden" id="productId" name="productId"> <input
-					type="hidden" id="requestStatus" name="requestStatus" value="0">
+				<div class="modal-body">요청이 확인되었습니다.</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">요청하기</button>
+					<a href="requestcheck.do" class="btn btn-primary">내 구매 요청 목록</a>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
 				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<!-- 요청 성공 모달 -->
-<div class="modal fade" id="RequestSuccessModal" tabindex="-1"
-	aria-labelledby="RequestSuccessModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="requestSuccessModalLabel">요청 성공</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">요청이 완료되었습니다.</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">닫기</button>
 			</div>
 		</div>
 	</div>
-</div>
 
-<!-- 요청 실패 모달 -->
-<div class="modal fade" id="RequestFailModal" tabindex="-1"
-	aria-labelledby="RequestFailModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="requestFailModalLabel">요청 실패</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">형식이 맞지 않습니다.</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">닫기</button>
+	<!-- 요청 실패 모달 -->
+	<div class="modal fade" id="RequestFailModal" tabindex="-1"
+		aria-labelledby="RequestFailModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="requestFailModalLabel">요청 실패</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">요청이 실패하였습니다. 다시 확인하여 주십시오.</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-	// 요청 성공 시 모달 띄우기
-<%if (request.getAttribute("requestSuccess") != null && (boolean) request.getAttribute("requestSuccess")) {%>
-	$(document).ready(function() {
-		$('#RequestSuccessModal').modal('show');
-	});
-<%}%>
-	// 요청 실패 시 모달 띄우기
-<%if (request.getAttribute("requestFail") != null && (boolean) request.getAttribute("requestFail")) {%>
-	$(document).ready(function() {
-		$('#RequestFailModal').modal('show');
-	});
-<%}%>
-	function requestModal(productId, productQuantity) {
-		console.log("productId : " + productId);
-		console.log("productQuantity : " + productQuantity);
 
-		$('#quantity').attr({
-			min : 1,
-			max : parseInt(productQuantity),
-			value : 1
-		});
-		$('#productId').val(productId);
-		$('#requestModal').modal('show');
-	}
-</script>
+		<script>
+			// 요청 성공 시 모달 띄우기
+		<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
+			$(document).ready(function() {
+				$('#RequestSuccessModal').modal('show');
+			});
+		<%session.removeAttribute("requestSuccess");%>
+			
+		<%}%>
+			// 요청 실패 시 모달 띄우기
+		<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
+			$(document).ready(function() {
+				$('#RequestFailModal').modal('show');
+			});
+		<%session.removeAttribute("requestFail");%>
+			
+		<%}%>
+			function requestModal(productId, productQuantity) {
+				console.log("productId : " + productId);
+				console.log("productQuantity : " + productQuantity);
+
+				$('#quantity').attr({
+					min : 1,
+					max : parseInt(productQuantity),
+					value : 1
+				});
+				$('#productId').val(productId);
+				$('#requestModal').modal('show');
+			}
+		</script>
+		<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
+</body>
 </html>

@@ -3,55 +3,96 @@ package requestManagement.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import requestManagement.dto.RequestDTO;
-import view.model.dto.UserDTO;
 
 public class RequestDAO {
-    private Connection getConnection() throws Exception {
-        Context initContext = new InitialContext();
-        Context envContext  = (Context)initContext.lookup("java:/comp/env");
-        DataSource ds = (DataSource)envContext.lookup("jdbc/purchase");
-        return ds.getConnection();
-    }
-    
-    // 요청 테이블 인서트 작업
-    public int insertRequest(RequestDTO request) {
-    	System.out.println("RequestDAO 접근 성공");
-        int result = 0;
-        String sql = "INSERT INTO PURCHASE_REQUEST (REQUEST_ID, USER_ID, PRODUCT_ID, REQUEST_QUANTITY, REQUEST_DATE, REQUEST_STATUS, REQUEST_REASON) " +
-                     "VALUES (REQ_SEQ.nextVal, ?, ?, ?, SYSDATE, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, request.getId());
-            pstmt.setString(2, request.getProductId());
-            pstmt.setString(3, request.getRequestQuantity());
-            pstmt.setString(4, request.getRequestStatus());
-            pstmt.setString(5, request.getRequestReason());
+	private Connection getConnection() throws Exception {
+		Context initContext = new InitialContext();
+		Context envContext = (Context) initContext.lookup("java:/comp/env");
+		DataSource ds = (DataSource) envContext.lookup("jdbc/purchase");
+		return ds.getConnection();
+	}
 
-            result = pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-    
-    public boolean select(String id, String password) {
-        boolean isValid = false;
-        String sql = "SELECT * FROM USER_INFO WHERE USER_ID = ? AND USER_PW = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, id);
-            pstmt.setString(2, password);  // 변경된 부분: pw -> password
-            ResultSet rs = pstmt.executeQuery();
-            isValid = rs.next();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return isValid;
-    }
+	// 요청 테이블 인서트 작업
+	public int insertRequest(RequestDTO request) {
+		System.out.println("RequestDAO insertRequest 접근 성공");
+		int result = 0;
+		String sql = "INSERT INTO PURCHASE_REQUEST (REQUEST_ID, USER_ID, PRODUCT_ID, REQUEST_QUANTITY, REQUEST_DATE, REQUEST_STATUS, REQUEST_REASON) "
+				+ "VALUES (REQ_SEQ.nextVal, ?, ?, ?, SYSDATE, ?, ?)";
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, request.getId());
+			pstmt.setString(2, request.getProductId());
+			pstmt.setString(3, request.getRequestQuantity());
+			pstmt.setString(4, request.getRequestStatus());
+			pstmt.setString(5, request.getRequestReason());
+
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public List<RequestDTO> requestCheck(String id) throws Exception {
+		System.out.println("RequestDAO requestCheck 접근 성공");
+		String sql = "SELECT * FROM PURCHASE_REQUEST WHERE USER_ID = ?";
+		List<RequestDTO> requestList = new ArrayList<>();
+
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, id);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					RequestDTO req = new RequestDTO();
+					req.setRequestId(rs.getString("REQUEST_ID"));
+					req.setId(rs.getString("USER_ID"));
+					req.setProductId(rs.getString("PRODUCT_ID"));
+					req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
+					req.setRequestDate(rs.getDate("REQUEST_DATE"));
+					req.setRequestStatus(rs.getString("REQUEST_STATUS"));
+					requestList.add(req);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return requestList;
+		}
+
+	}
+
+	public List<RequestDTO> adminCheck() {
+		System.out.println("RequestDAO adminCheck 접근 성공");
+		String sql = "SELECT * FROM PURCHASE_REQUEST WHERE REQUEST_STATUS = '0'";
+		
+		List<RequestDTO> adminList = new ArrayList<>();
+		
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		
+			try (ResultSet rs = pstmt.executeQuery() ){
+				while(rs.next()) {
+					RequestDTO req = new RequestDTO();
+	                req.setRequestId(rs.getString("REQUEST_ID"));     
+	                req.setId(rs.getString("USER_ID"));               
+	                req.setProductId(rs.getString("PRODUCT_ID"));     
+	                req.setRequestQuantity(rs.getString("REQUEST_QUANTITY")); 
+	                req.setRequestDate(rs.getDate("REQUEST_DATE"));    
+	                req.setRequestStatus(rs.getString("REQUEST_STATUS"));   
+	                adminList.add(req);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return adminList;
+	}
+
 }
