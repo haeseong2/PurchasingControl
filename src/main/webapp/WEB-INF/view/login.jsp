@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-  String userStatus = (String) session.getAttribute("user_status");
-  if (userStatus == null) userStatus = "1"; // 기본은 일반 사용자
+  String userRole = (String) session.getAttribute("userRole");
+  if (userRole == null) userRole = "1"; // 기본은 일반 사용자
 %>
 
 
@@ -18,7 +18,7 @@
         <ul class="list-group">
           <li class="list-group-item"><a href="list.do">제품</a></li>
           <li class="list-group-item"><a href="#">요청</a></li>
-          <% if ("A".equals(userStatus)) { %>
+          <% if ("0".equals(userRole)) { %>
           <li class="list-group-item"><a href="#">요청목록</a></li>
           <!-- <li class="list-group-item"><a href="#">발주</a></li> -->
           <% } %>
