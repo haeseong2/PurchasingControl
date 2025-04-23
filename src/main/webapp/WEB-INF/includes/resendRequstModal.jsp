@@ -21,7 +21,7 @@
 							<label for="reason" class="form-label">요청 사유</label>
 							<textarea class="form-control" id="reason" name="reason" rows="3"
 								required></textarea>
-						</div>
+						</div> 
 					</div>
 					<input type="hidden" id="productId" name="productId"> <input
 						type="hidden" id="requestStatus" name="requestStatus" value="0">

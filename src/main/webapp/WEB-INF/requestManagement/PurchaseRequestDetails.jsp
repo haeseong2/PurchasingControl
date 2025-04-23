@@ -138,11 +138,6 @@ th {
 	function resendRequestModal(requestId) {
 		console.log("requestId : " + requestId);
 
-		$('#quantity').attr({
-			min : 1,
-			max : parseInt(productQuantity),
-			value : 1
-		});
 		$('#requestIdHidden').val(requestId);
 		$('#resendRequestModal').modal('show');
 	}
