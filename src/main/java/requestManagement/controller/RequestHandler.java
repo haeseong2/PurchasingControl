@@ -41,38 +41,13 @@ public class RequestHandler implements CommandHandler {
 
 		RequestDAO dao = new RequestDAO();
 		int result = dao.insertRequest(req);
-
-		ProductDAO dao2 = new ProductDAO();
-
 		System.out.println("result : " + result);
-
-		List<ProductDTO> product = dao2.selectProduct();
-		request.setAttribute("product", product);
-
+		
 		if (result > 0) {
-
-			int minusResult = dao2.decreaseQuantity(productId, quantity);
-			System.out.println("재고 차감 결과: " + minusResult);
-
-			if (minusResult > 0) {
-				// 재고 차감 성공
-				session.setAttribute("decreased_" + productId, true);
-				session.setAttribute("requestSuccess", true);
-				response.sendRedirect(request.getContextPath() + "/list.do");
-				return null;
-			} else if (minusResult == 0) {
-				// 재고와 요청 수량이 일치한 상태
-				session.setAttribute("requestSuccess", true);
-				response.sendRedirect(request.getContextPath() + "/list.do");
-				return null;
-			} else {
-				// 재고 부족 또는 오류
-				session.setAttribute("requestFail", true);
-				response.sendRedirect(request.getContextPath() + "/list.do");
-				return null;
-			}
-
-		} else {
+			session.setAttribute("requestSuccess", true);
+			response.sendRedirect(request.getContextPath() + "/list.do");
+			return null;				
+		}else {
 			session.setAttribute("requestFail", true);
 			System.out.println("재고 차감 불가");
 			response.sendRedirect(request.getContextPath() + "/list.do");

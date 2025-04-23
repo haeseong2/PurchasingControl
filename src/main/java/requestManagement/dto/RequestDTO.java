@@ -10,6 +10,8 @@ public class RequestDTO {
 	private String requestStatus;
 	private String requestReason;
 	private Date requestDate;
+	private String rejectReason;
+
 	
 	public String getRequestId() {
 		return requestId;
@@ -17,30 +19,35 @@ public class RequestDTO {
 	public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
+	
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public String getProductId() {
 		return productId;
 	}
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+	
 	public String getRequestQuantity() {
 		return requestQuantity;
 	}
 	public void setRequestQuantity(String requestQuantity) {
 		this.requestQuantity = requestQuantity;
 	}
+	
 	public String getRequestStatus() {
 		return requestStatus;
 	}
 	public void setRequestStatus(String requestStatus) {
 		this.requestStatus = requestStatus;
 	}
+	
 	public String getRequestReason() {
 		return requestReason;
 	}
@@ -54,27 +61,53 @@ public class RequestDTO {
 	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
 	}
+	
+	public String getRejectReason() {
+		return rejectReason;
+	}
+	public void setRejectReason (String rejectReason) {
+		this.rejectReason = rejectReason;
+	}
+
+	
+	
 	public RequestDTO() {}
 	public RequestDTO(String requestId, String id, String productId, String requestQuantity, String requestStatus,
-			String requestReason, Date requestDate) {
+			String requestReason, Date requestDate, String rejectReason) {
 		super();
-		this.requestId = requestId;
-		this.id = id;
-		this.productId = productId;
-		this.requestQuantity = requestQuantity;
-		this.requestStatus = requestStatus;
-		this.requestReason = requestReason;
-		this.requestDate = requestDate;
+		this.requestId 			= requestId;
+		this.id 				= id;
+		this.productId 			= productId;
+		this.requestQuantity 	= requestQuantity;
+		this.requestStatus 		= requestStatus;
+		this.requestReason 		= requestReason;
+		this.requestDate 		= requestDate;
+		this.rejectReason 		= rejectReason;
 	}
+
+	
 	@Override
 	public String toString() {
-		return "RequestDTO [requestId=" + requestId + ", id=" + id + ", productId=" + productId + ", requestQuantity="
-				+ requestQuantity + ", requestStatus=" + requestStatus + ", requestReason=" + requestReason
-				+ ", requestDate=" + requestDate + ", getRequestId()=" + getRequestId() + ", getId()=" + getId()
-				+ ", getProductId()=" + getProductId() + ", getRequestQuantity()=" + getRequestQuantity()
-				+ ", getRequestStatus()=" + getRequestStatus() + ", getRequestReason()=" + getRequestReason()
-				+ ", getRequestDate()=" + getRequestDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+		return "RequestDTO [requestId=" 	+ requestId 
+				+ ", id=" 					+ id 
+				+ ", productId=" 			+ productId 
+				+ ", requestQuantity=" 		+ requestQuantity 
+				+ ", requestStatus=" 		+ requestStatus 
+				+ ", requestReason=" 		+ requestReason
+				+ ", requestDate=" 			+ requestDate 
+				+ ", rejectReason=" 		+ rejectReason
+				+ ", getRequestId()=" 		+ getRequestId() 
+				+ ", getId()=" 				+ getId()
+				+ ", getProductId()=" 		+ getProductId() 
+				+ ", getRequestQuantity()=" + getRequestQuantity()
+				+ ", getRequestStatus()=" 	+ getRequestStatus() 
+				+ ", getRequestReason()=" 	+ getRequestReason()
+				+ ", getRequestDate()=" 	+ getRequestDate() 
+				+ ", getRejectReason()=" 	+ getRejectReason()
+				+ ", getClass()=" 			+ getClass() 
+				+ ", hashCode()="			+ hashCode()
+				+ ", toString()=" 			+ super.toString() 
+				+ "]";
 	}
 
 	
