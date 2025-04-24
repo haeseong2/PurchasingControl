@@ -16,12 +16,22 @@ public class RequestAdminHandler implements CommandHandler {
 		System.out.println("RequestAdminHandler 접근 성공");
 		request.setCharacterEncoding("UTF-8");
 		
+		String keyword = request.getParameter("keyword");
+		System.out.println("검색할 요청자 이름 : " + keyword);
+		
 		RequestDAO dao = new RequestDAO();
 		
-		List<RequestDTO> adminCheck = dao.adminCheck();
-		System.out.println("adminCheck : " + adminCheck);
-		
-		request.setAttribute("adminCheck", adminCheck);
+		if (keyword != null) {
+			List<RequestDTO> adminCheckSearch = dao.adminCheckSearch(keyword);
+			System.out.println("adminCheckSearch : " + adminCheckSearch);
+			
+			request.setAttribute("adminCheck", adminCheckSearch);
+		} else {
+			List<RequestDTO> adminCheck = dao.adminCheck();
+			System.out.println("adminCheck : " + adminCheck);
+			
+			request.setAttribute("adminCheck", adminCheck);			
+		}
 		return "/WEB-INF/requestManagement/PurchaseAdminRequest.jsp";
 	}
 

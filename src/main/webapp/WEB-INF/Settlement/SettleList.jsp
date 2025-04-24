@@ -33,11 +33,10 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>요청 ID</th>
-                <th>사용자 ID</th>
+                <th>요청자</th>
                 <th>제품명</th>
-                <th>수량</th>
-                <th>요청 일자</th>
+                <th>정산 금액</th>
+                <th>정산 일자</th>
                 <th>정산 상태</th>
             </tr>
         </thead>
@@ -46,11 +45,10 @@
                 <c:when test="${not empty settlementList}">
                     <c:forEach var="item" items="${settlementList}">
                         <tr>
-                            <td>${item.requestId}</td>
-                            <td>${item.userId}</td>
+                            <td>${item.userName}</td>
                             <td>${item.productName}</td>
-                            <td>${item.requestQuantity}</td>
-                            <td>${item.requestDate}</td>
+                            <td>${item.totalAmount}</td>
+                            <td>${item.settlementDate}</td>
                             <td>정산 완료</td>
                         </tr>
                     </c:forEach>

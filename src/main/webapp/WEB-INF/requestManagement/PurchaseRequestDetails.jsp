@@ -80,6 +80,14 @@ th {
 
 	<div class="container">
 		<h2>내 구매 요청 내역</h2>
+		<form action="requestcheck.do" method="get" id="searchForm">
+				<input type="text" name="keyword" placeholder="요청자 검색"
+					style="width: 100%; padding: 5px; margin-bottom: 10px;">
+				<button type="submit"
+					style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
+					검색</button>
+				<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
+			</form>
 		<table>
 			<tr>
 				<th>요청자</th>
@@ -173,6 +181,30 @@ th {
 		location.href = "resend.do?requestId=" + requestId;
 	}
 
+<<<<<<< HEAD
+	function resendRequestModal(requestId) {
+		console.log("requestId : " + requestId);
+
+		$('#requestIdHidden').val(requestId);
+		$('#resendRequestModal').modal('show');
+	}
+</script>
+
+
+<!--  "정산 완료" 모달 띄우기 -->
+<c:if test="${sessionScope.settleSuccess}">
+	<script>
+		$(function() {
+			$('#settleSuccessModal').modal('show');
+		});
+	</script>
+	<c:remove var="settleSuccess" scope="session" />
+</c:if>
+
+
+<script>
+=======
+>>>>>>> f1eae7640b0a557523ab420e9447091e347564e4
 <!-- 요청 성공 시 모달 띄우기 -->
 <% if (request.getAttribute("resendRequestSuccess") != null) { %>
 	$(document).ready(function() {
