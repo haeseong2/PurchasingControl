@@ -11,8 +11,23 @@ public class RequestDTO {
 	private String requestReason;
 	private Date requestDate;
 	private String rejectReason;
-
+	private String userName;
+	private String prodoctName;
 	
+	
+
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getProdoctName() {
+		return prodoctName;
+	}
+	public void setProdoctName(String prodoctName) {
+		this.prodoctName = prodoctName;
+	}
 	public String getRequestId() {
 		return requestId;
 	}
@@ -84,31 +99,15 @@ public class RequestDTO {
 		this.requestDate 		= requestDate;
 		this.rejectReason 		= rejectReason;
 	}
-
-	
 	@Override
 	public String toString() {
-		return "RequestDTO [requestId=" 	+ requestId 
-				+ ", id=" 					+ id 
-				+ ", productId=" 			+ productId 
-				+ ", requestQuantity=" 		+ requestQuantity 
-				+ ", requestStatus=" 		+ requestStatus 
-				+ ", requestReason=" 		+ requestReason
-				+ ", requestDate=" 			+ requestDate 
-				+ ", rejectReason=" 		+ rejectReason
-				+ ", getRequestId()=" 		+ getRequestId() 
-				+ ", getId()=" 				+ getId()
-				+ ", getProductId()=" 		+ getProductId() 
-				+ ", getRequestQuantity()=" + getRequestQuantity()
-				+ ", getRequestStatus()=" 	+ getRequestStatus() 
-				+ ", getRequestReason()=" 	+ getRequestReason()
-				+ ", getRequestDate()=" 	+ getRequestDate() 
-				+ ", getRejectReason()=" 	+ getRejectReason()
-				+ ", getClass()=" 			+ getClass() 
-				+ ", hashCode()="			+ hashCode()
-				+ ", toString()=" 			+ super.toString() 
-				+ "]";
+		return "RequestDTO [requestId=" + requestId + ", id=" + id + ", productId=" + productId + ", requestQuantity="
+				+ requestQuantity + ", requestStatus=" + requestStatus + ", requestReason=" + requestReason
+				+ ", requestDate=" + requestDate + ", rejectReason=" + rejectReason + ", userName=" + userName
+				+ ", prodoctName=" + prodoctName + "]";
 	}
+
+	
 
 	
 	

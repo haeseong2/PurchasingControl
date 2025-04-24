@@ -19,16 +19,15 @@ public class UserDAO {
 
     public int insertUser(UserDTO user) {
         int result = 0;
-        String sql = "INSERT INTO USER_INFO (USER_ID, USER_NAME, USER_EMAIL, USER_STATUS, DEPARTMENT_ID, USER_CREATED, USER_PW) " +
-                     "VALUES (?, ?, ?, ?, ?, SYSDATE, ?)";
+        String sql = "INSERT INTO USER_INFO (USER_ID, USER_NAME, USER_EMAIL, USER_STATUS, USER_CREATED, USER_PW) " +
+                     "VALUES (?, ?, ?, ?, SYSDATE, ?)";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getId());
             pstmt.setString(2, user.getUserName());
             pstmt.setString(3, user.getUserEmail());
             pstmt.setString(4, user.getUserStatus());  // 변경된 부분: getStatus() -> getUserStatus()
-            pstmt.setString(5, user.getDepartmentId());
-            pstmt.setString(6, user.getPassword());    // 변경된 부분: getPw() -> getPassword()
+            pstmt.setString(5, user.getPassword());    // 변경된 부분: getPw() -> getPassword()
 
             result = pstmt.executeUpdate();
         } catch (Exception e) {

@@ -16,7 +16,6 @@ public class RegisterHandler implements CommandHandler {
         String email    = request.getParameter("email");
         String password = request.getParameter("password");
         String status   = request.getParameter("role"); 
-        String dept     = request.getParameter("department");
 
         UserDTO user = new UserDTO();
         user.setId(id);
@@ -24,8 +23,7 @@ public class RegisterHandler implements CommandHandler {
         user.setUserEmail(email);
         user.setPassword(password);
         user.setUserStatus(status);
-        user.setDepartmentId(dept);
-
+        
         UserDAO dao = new UserDAO();
         int result = dao.insertUser(user);
 
