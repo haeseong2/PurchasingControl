@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource name="jdbc/purchase"
+            auth="Container"
+            type="javax.sql.DataSource"
+            driverClassName="oracle.jdbc.driver.OracleDriver"
+            url="jdbc:oracle:thin:@211.245.48.159:1521:xe"
+            username="DEKIRU"
+            password="DEKIRU"
+            maxTotal="30"
+            maxIdle="10"
+            validationQuery="select 1 from dual" />
+</Context>
