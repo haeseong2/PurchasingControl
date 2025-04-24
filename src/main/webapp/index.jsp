@@ -77,6 +77,28 @@
   </div>
 </div>
 
+<div class="container mt-4">
+  <table class="table table-bordered table-striped text-center mx-auto" style="width: 80%;">
+    <thead class="table-dark">
+      <tr>
+        <th>요청자</th>
+        <th>제품명</th>
+        <th>정산완료일자</th>
+        <th>제품가격</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td> </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
 <!-- 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

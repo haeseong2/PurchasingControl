@@ -19,7 +19,9 @@ public class LoginHandler implements CommandHandler {
         UserDAO dao = new UserDAO();
         UserDTO user = dao.getUserByIdAndPw(username, password);
         boolean success = dao.login(username, password);
-
+        
+        
+        
         if (success && user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", username);  // 사용자 아이디 저장
