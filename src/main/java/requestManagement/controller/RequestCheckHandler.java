@@ -20,10 +20,8 @@ public class RequestCheckHandler implements CommandHandler {
         System.out.println("로그인한 사용자 ID: " + id);
         
         RequestDAO dao = new RequestDAO();
-        List<RequestDTO>checkResult = null;
-        checkResult = dao.requestCheck(id);
         
-        
+        List<RequestDTO> checkResult = dao.requestCheck(id);
         System.out.println("RequestCheckList : "+ checkResult);
         
         request.setAttribute("checkResult", checkResult);
