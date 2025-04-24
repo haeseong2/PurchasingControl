@@ -11,7 +11,7 @@ public class LoginHandler implements CommandHandler {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setCharacterEncoding("UTF-8");
+    	request.setCharacterEncoding("UTF-8");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");

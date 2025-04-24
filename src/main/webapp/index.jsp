@@ -6,18 +6,16 @@
   <meta charset="UTF-8">
   <title>구매관리 시스템</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head> 
+</head>
   <style>
     .offcanvas-end {
-      width: 260px; 
+      width: 260px;
     }
   </style>
 </head>
 <body>
-
 <div class="container text-center mt-5">
   <h1>구매관리 시스템</h1>
-
   <%
     String username = (String) session.getAttribute("user");
     String userRole = (String) session.getAttribute("userRole"); // "0" = 관리자, "1" = 사용자
@@ -36,14 +34,10 @@
     }
   %>
 </div>
-
-
 <!-- 로그인 모달 -->
 <jsp:include page="/WEB-INF/view/login.jsp" />
-
 <!-- 회원가입 모달 -->
 <jsp:include page="/WEB-INF/view/register.jsp" />
-
 <!-- 회원가입 성공 모달 -->
 <div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -60,7 +54,6 @@
     </div>
   </div>
 </div>
-
 <!-- 로그인 실패 모달 -->
 <div class="modal fade" id="loginFailModal" tabindex="-1" aria-labelledby="loginFailModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -76,7 +69,26 @@
     </div>
   </div>
 </div>
-
+<div class="container mt-4">
+  <table class="table table-bordered table-striped text-center mx-auto" style="width: 80%;">
+    <thead class="table-dark">
+      <tr>
+        <th>요청자</th>
+        <th>제품명</th>
+        <th>정산완료일자</th>
+        <th>제품가격</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td> </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <!-- 스크립트 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -85,10 +97,8 @@
     $(document).ready(function () {
       $('#registerSuccessModal').modal('show');
     });
-    
     	
   <% } %>
-
   <% if (request.getAttribute("loginFail") != null && (boolean) request.getAttribute("loginFail")) { %>
     $(document).ready(function () {
       $('#loginFailModal').modal('show');
@@ -98,5 +108,12 @@
 <jsp:include page="/WEB-INF/view/register.jsp" />
 <jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
-</html>
 
+<script type="text/javascript">
+$(document).ready(function () {
+    setInterval(function () {
+        location.href = "index.do";
+    }, 300000); // 300,000ms = 300초 = 5분
+});
+</script>
+</html>
