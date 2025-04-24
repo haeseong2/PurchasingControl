@@ -38,11 +38,6 @@
 							<option value="1">사용자</option>
 						</select>
 					</div>
-					<div class="mb-3">
-						<label for="department" class="form-label">부서명</label> <input
-							type="text" class="form-control" id="department"
-							name="department">
-					</div>
 
 					<%
 					if (request.getAttribute("error") != null) {

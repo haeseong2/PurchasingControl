@@ -19,14 +19,14 @@ response.setDateHeader("Expires", 0); // Proxies
 <style>
 body {
 	font-family: Arial, sans-serif;
-	margin: 20px;
+	margin: 0;
+	padding: 20px;
 	background-color: #F4F4F4;
-	display: flex;
-	justify-content: center;
 }
 
 .container {
-	width: 600px;
+	width: 100%;
+	max-width: 800px; /* 최대 너비 설정 */
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -58,19 +58,6 @@ th, td {
 th {
 	background: #F8F8F8;
 }
-
-.purchase-button {
-	background: #009688;
-	color: white;
-	padding: 6px 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.purchase-button:hover {
-	background-color: #00796B;
-}
 </style>
 </head>
 <body>
@@ -83,7 +70,6 @@ th {
 
 
 	<div class="container">
-		<h1>제품 목록 및 관리</h1>
 		<div class="card">
 			<h2>제품 리스트 조회</h2>
 			<form action="productsearch.do" method="get" id="searchForm">
@@ -97,9 +83,9 @@ th {
 			<table>
 				<tr>
 					<th>품번</th>
-					<th>이름</th>
-					<th>설명</th>
-					<th>가격</th>
+					<th>제품 명</th>
+					<th>제품 설명</th>
+					<th>제품 가격</th>
 					<th>재고</th>
 					<th>구매요청</th>
 				</tr>
@@ -161,7 +147,7 @@ th {
 	</div>
 
 <jsp:include page="/WEB-INF/includes/requstModal.jsp" />
-
+<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -197,6 +183,5 @@ th {
 				$('#requestModal').modal('show');
 			}
 		</script>
-		<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 </html>
