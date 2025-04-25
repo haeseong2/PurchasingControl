@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ page language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,14 +80,16 @@
         <th>제품가격</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td></td>
-        <td> </td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
+<tbody>
+  <c:forEach var="item" items="${requestResult}">
+    <tr>
+      <td>${item.userName}</td>
+      <td>${item.productName}</td>
+      <td>${item.settlementDate}</td>
+      <td>${item.productPrice}</td>
+    </tr>
+  </c:forEach>
+</tbody>
   </table>
 </div>
 <!-- 스크립트 -->
@@ -113,7 +116,7 @@
 $(document).ready(function () {
     setInterval(function () {
         location.href = "index.do";
-    }, 300000); // 300,000ms = 300초 = 5분
+    }, 100000); // 300,000ms = 300초 = 5분
 });
 </script>
 </html>
