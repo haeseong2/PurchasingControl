@@ -45,37 +45,55 @@ public class RequestDAO {
 
 	//요청확인
 	public List<RequestDTO> requestCheck(String id) throws Exception {
-		System.out.println("RequestDAO requestCheck 접근 성공");
-		String sql = "SELECT * FROM PURCHASE_REQUEST WHERE USER_ID = ?";
-		List<RequestDTO> requestList = new ArrayList<>();
+	    System.out.println("RequestDAO requestCheck 접근 성공");
+	    String sql = "SELECT UI.USER_NAME, PR.PRODUCT_ID, P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, PR.REQUEST_STATUS, PR.REQUEST_REASON, PR.REJECT_REASON, PR.REQUEST_ID, PR.USER_ID " +
+	                 "FROM PURCHASE_REQUEST PR " +
+	                 "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
+	                 "INNER JOIN PRODUCT P ON P.PRODUCT_ID = PR.PRODUCT_ID " +
+	                 "WHERE PR.USER_ID = ?";
+	    List<RequestDTO> requestList = new ArrayList<>();
 
-		try (Connection conn = getConnection(); 
-			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = getConnection(); 
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-			pstmt.setString(1, id);
-			try (ResultSet rs = pstmt.executeQuery()) {
-				while (rs.next()) {
-					RequestDTO req = new RequestDTO();
-					req.setRequestId(rs.getString("REQUEST_ID"));
-					req.setId(rs.getString("USER_ID"));
-					req.setProductId(rs.getString("PRODUCT_ID"));
-					req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
-					req.setRequestDate(rs.getDate("REQUEST_DATE"));
-					req.setRequestStatus(rs.getString("REQUEST_STATUS"));
-					requestList.add(req);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return requestList;
-		}
+	        pstmt.setString(1, id);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                RequestDTO req = new RequestDTO();
+	                req.setUserName(rs.getString("USER_NAME")); 
+	                req.setProductId(rs.getString("PRODUCT_ID"));
+	                req.setProdoctName(rs.getString("PRODUCT_NAME"));
+	                req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
+	                req.setRequestDate(rs.getDate("REQUEST_DATE"));
+	                req.setRequestStatus(rs.getString("REQUEST_STATUS"));
+	                req.setRequestReason(rs.getString("REQUEST_REASON"));
+	                req.setRejectReason(rs.getString("REJECT_REASON"));
+	                req.setRequestId(rs.getString("REQUEST_ID"));
+	                req.setId(rs.getString("USER_ID"));
+	                requestList.add(req);
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace(); // 예외 처리
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new Exception("Database error during request check.");
+	    }
 
+	    return requestList;
 	}
 
 	//요청 승인
 	public List<RequestDTO> adminCheck() {
 		System.out.println("RequestDAO adminCheck 접근 성공");
-		String sql = "SELECT * FROM PURCHASE_REQUEST WHERE REQUEST_STATUS = '0'";
+		String sql = "SELECT " +
+		         "PR.REQUEST_ID, PR.USER_ID, UI.USER_NAME, PR.PRODUCT_ID, " +
+	             "P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, " +
+	             "PR.REQUEST_REASON, PR.REQUEST_STATUS " +
+	             "FROM PURCHASE_REQUEST PR " +
+	             "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
+	             "INNER JOIN PRODUCT P ON P.PRODUCT_ID = PR.PRODUCT_ID " +
+	             "WHERE PR.REQUEST_STATUS = '0'";
 
 		List<RequestDTO> adminList = new ArrayList<>();
 
@@ -87,9 +105,12 @@ public class RequestDAO {
 					RequestDTO req = new RequestDTO();
 					req.setRequestId(rs.getString("REQUEST_ID"));
 					req.setId(rs.getString("USER_ID"));
+					req.setUserName(rs.getString("USER_NAME"));
 					req.setProductId(rs.getString("PRODUCT_ID"));
+					req.setProdoctName(rs.getString("PRODUCT_NAME"));
 					req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
 					req.setRequestDate(rs.getDate("REQUEST_DATE"));
+					req.setRequestReason(rs.getString("REQUEST_REASON"));
 					req.setRequestStatus(rs.getString("REQUEST_STATUS"));
 					adminList.add(req);
 				}
@@ -164,23 +185,18 @@ public class RequestDAO {
 		}
 
 	//정산
-	public int settleInsert(String requestId, String user) {
+	public int settleInsert(String requestId, String user, String requestQuantity) {
 		System.out.println("settleInsert 접근 성공");
 	    String sql = "INSERT INTO Purchase_Settlement \r\n"
 	            + "(settlement_id, request_id, user_id, total_amount, settlement_date, settlement_status) \r\n"
-	            + "VALUES (SET_SEQ.nextVal, ?, ?, \r\n"
-	            + " (SELECT PD.product_price \r\n"
-	            + "  FROM Purchase_Request PR \r\n"
-	            + "  JOIN Product PD ON PD.product_id = PR.product_id \r\n"
-	            + "  WHERE PR.request_id = ?), \r\n"
-	            + " SYSDATE, 1)";
+	            + "VALUES (SET_SEQ.nextVal, ?, ?, ?, SYSDATE, 1)";
 		int result = 0;		
 		try (Connection conn = getConnection(); 
 			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 				pstmt.setString(1, requestId);
 				pstmt.setString(2, user);
-				pstmt.setString(3, requestId);
+				pstmt.setString(3, requestQuantity);
 				result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -253,6 +269,89 @@ public class RequestDAO {
 
 	    return result;
 	}
+
+
+	public List<RequestDTO> checkResultSearch(String id, String keyword) throws Exception {
+		System.out.println("RequestDAO checkResultSearch 접근 성공");
+	    String sql = "SELECT UI.USER_NAME, PR.PRODUCT_ID, P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, PR.REQUEST_STATUS, PR.REQUEST_REASON, PR.REJECT_REASON, PR.REQUEST_ID, PR.USER_ID " +
+	                 "FROM PURCHASE_REQUEST PR " +
+	                 "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
+	                 "INNER JOIN PRODUCT P ON P.PRODUCT_ID = PR.PRODUCT_ID " +
+	                 "WHERE PR.USER_ID = ?" +
+	                 "AND UI.USER_NAME LIKE ?";
+	    List<RequestDTO> requestList = new ArrayList<>();
+
+	    try (Connection conn = getConnection(); 
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        keyword = "%" + keyword + "%";
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, keyword);
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                RequestDTO req = new RequestDTO();
+	                req.setUserName(rs.getString("USER_NAME")); 
+	                req.setProductId(rs.getString("PRODUCT_ID"));
+	                req.setProdoctName(rs.getString("PRODUCT_NAME"));
+	                req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
+	                req.setRequestDate(rs.getDate("REQUEST_DATE"));
+	                req.setRequestStatus(rs.getString("REQUEST_STATUS"));
+	                req.setRequestReason(rs.getString("REQUEST_REASON"));
+	                req.setRejectReason(rs.getString("REJECT_REASON"));
+	                req.setRequestId(rs.getString("REQUEST_ID"));
+	                req.setId(rs.getString("USER_ID"));
+	                requestList.add(req);
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace(); // 예외 처리
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new Exception("Database error during request check.");
+	    }
+
+	    return requestList;
+	}
+
+
+	public List<RequestDTO> adminCheckSearch(String keyword) {
+		System.out.println("RequestDAO adminCheckSearch 접근 성공");
+		String sql = "SELECT " +
+		         "PR.REQUEST_ID, PR.USER_ID, UI.USER_NAME, PR.PRODUCT_ID, " +
+	             "P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, " +
+	             "PR.REQUEST_REASON, PR.REQUEST_STATUS " +
+	             "FROM PURCHASE_REQUEST PR " +
+	             "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
+	             "INNER JOIN PRODUCT P ON P.PRODUCT_ID = PR.PRODUCT_ID " +
+	             "WHERE PR.REQUEST_STATUS = '0'" +
+                 "AND UI.USER_NAME LIKE ?";
+
+		List<RequestDTO> adminList = new ArrayList<>();
+
+		try (Connection conn = getConnection(); 
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			 keyword = "%" + keyword + "%";
+		     pstmt.setString(1, keyword);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					RequestDTO req = new RequestDTO();
+					req.setRequestId(rs.getString("REQUEST_ID"));
+					req.setId(rs.getString("USER_ID"));
+					req.setUserName(rs.getString("USER_NAME"));
+					req.setProductId(rs.getString("PRODUCT_ID"));
+					req.setProdoctName(rs.getString("PRODUCT_NAME"));
+					req.setRequestQuantity(rs.getString("REQUEST_QUANTITY"));
+					req.setRequestDate(rs.getDate("REQUEST_DATE"));
+					req.setRequestReason(rs.getString("REQUEST_REASON"));
+					req.setRequestStatus(rs.getString("REQUEST_STATUS"));
+					adminList.add(req);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return adminList;
+	}
+
 
 
 
