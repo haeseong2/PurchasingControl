@@ -68,6 +68,22 @@ th {
 .purchase-button:hover {
 	background-color: #00796B;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -81,28 +97,29 @@ th {
 	<div class="container">
 		<h2>내 구매 요청 내역</h2>
 		<form action="requestcheck.do" method="get" id="searchForm">
-				<input type="text" name="keyword" placeholder="요청자 검색"
-					style="width: 100%; padding: 5px; margin-bottom: 10px;">
-				<button type="submit"
-					style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
-					검색</button>
-				<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
-			</form>
+			<input type="text" name="keyword" placeholder="요청자 검색" value="${param.keyword}"
+			 style="width: 100%; padding: 5px; margin-bottom: 10px;">
+			<button type="submit"
+				style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
+				검색</button>
+			<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
+		</form>
 		<table>
 			<tr>
 				<th>요청자</th>
 				<th>제품 ID</th>
 				<th>제품명</th>
 				<th>요청 수량</th>
-				<th>요청 일자</th>	
+				<th>요청 일자</th>
 				<c:choose>
-				  <c:when test="${not empty checkResult and checkResult[0].requestStatus == '2'}">
-				    <th>반려 내용</th>
-				  </c:when>
-				  <c:otherwise>
-				    <th>요청 내용</th>
-				  </c:otherwise>
-				</c:choose>	
+					<c:when
+						test="${not empty checkResult and checkResult[0].requestStatus == '2'}">
+						<th>반려 내용</th>
+					</c:when>
+					<c:otherwise>
+						<th>요청 내용</th>
+					</c:otherwise>
+				</c:choose>
 				<th>상태</th>
 			</tr>
 			<c:choose>
@@ -113,25 +130,27 @@ th {
 							<td>${request.productId}</td>
 							<td>${request.prodoctName}</td>
 							<td>${request.requestQuantity}</td>
-						    <td><fmt:formatDate pattern="yyyy-MM-dd" value="${request.requestDate}" /></td>
-						    
-						    <c:if test="${request.requestStatus != '2'}">
+							<td><fmt:formatDate pattern="yyyy-MM-dd"
+									value="${request.requestDate}" /></td>
+
+							<c:if test="${request.requestStatus != '2'}">
 								<td>${request.requestReason}</td>
 							</c:if>
 							<c:if test="${request.requestStatus == '2'}">
 								<td>${request.rejectReason}</td>
 							</c:if>
-						    
+
 							<c:if test="${request.requestStatus == '0'}">
 								<td>요청중</td>
 							</c:if>
 
 							<c:if test="${request.requestStatus == '1'}">
-								<td><button class="btn btn-primary" onclick="settle('${request.requestId}','${request.requestQuantity}')">정산요청</button></td>
+								<td><button class="btn btn-primary"
+										onclick="settle('${request.requestId}','${request.requestQuantity}')">정산요청</button></td>
 							</c:if>
 
 							<c:if test="${request.requestStatus == '2'}">
-								<td><button  class="btn btn-primary"
+								<td><button class="btn btn-primary"
 										onclick="resendRequestModal('${request.requestId}', '${request.requestQuantity}')">재요청</button></td>
 							</c:if>
 
@@ -149,6 +168,37 @@ th {
 					</tr>
 				</c:otherwise>
 			</c:choose>
+
+<c:if test="${requestPage.hasProducts}">
+    <tr>
+        <td colspan="7">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${requestPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${requestPage.startPage}" end="${requestPage.endPage}">
+                            <li class="page-item ${pNo == requestPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${pNo}&keyword=${param.keyword}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${requestPage.endPage < requestPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
+
 		</table>
 	</div>
 
@@ -157,37 +207,90 @@ th {
 	<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 
 </body>
-
+<script>
+    var currentPage = ${param.pageNo != null ? param.pageNo : 1};
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
-	function resendRequestModal(requestId,quantity) {
+
+	var currentPage = ${param.pageNo != null ? param.pageNo : 1};
+	var keyword = $('input[name="keyword"]').val().trim();
+	$('#keywordHidden').val(keyword || '');
+
+	function resendRequestModal(requestId, quantity) {
 		console.log("requestId : " + requestId);
 
 		$('#requestIdHidden').val(requestId);
 		$('#quantity').val(quantity).attr('readonly', true);
+		$('#pageNoHidden').val(currentPage);
+		
+		$('#keywordHidden').val($('input[name="keyword"]').val().trim());
+		
 		$('#resendRequestModal').modal('show');
 	}
+	
+	$('#resendSubmit').on('click', function() {
+        $('#resendForm').submit();
+    });
 
-	function settle(requestId,requestQuantity) {
+	function settle(requestId, requestQuantity) {
 		console.log("requestId : " + requestId);
-		location.href = "settle.do?requestId=" + requestId + "&requestQuantity=" + requestQuantity;
+		
+		var pageNo = $('#pageNoHidden').val() || currentPage;
+        var kw     = $('input[name=keyword]').val() || '';
+		
+		/* location.href = "settle.do?requestId=" + requestId
+				+ "&requestQuantity=" + requestQuantity
+		 + "&pageNo=" + currentPage; */
+		
+        location.href = 'settle.do'
+            + '?requestId='      + encodeURIComponent(requestId)
+            + '&requestQuantity='+ encodeURIComponent(requestQuantity)
+            + '&pageNo='         + encodeURIComponent(pageNo)
+            + '&keyword='        + encodeURIComponent(kw);
 	}
 
 	function resendRequest(requestId) {
-		console.log("requestId : " + requestId);
-		location.href = "resend.do?requestId=" + requestId;
-	}
+        console.log("requestId : " + requestId);
+        
+        var keyword = document.querySelector("input[name='keyword']").value;  // 검색어 값 가져오기
+        var pageNo = document.getElementById("pageNoHidden").value;  // 페이지 번호 가져오기
 
-<<<<<<< HEAD
-	function resendRequestModal(requestId) {
+        location.href = "resend.do?requestId=" + encodeURIComponent(requestId)
+        + "&pageNo=" + encodeURIComponent(pageNo)
+        + "&keyword=" + encodeURIComponent(keyword);
+ 
+       /*  var pageNo = currentPage;  // 상단에서 선언해둔 변수
+        location.href = "resend.do?requestId=" 
+            + encodeURIComponent(requestId)
+            + "&pageNo=" + encodeURIComponent(pageNo); */
+    }
+
+/* 	function resendRequestModal(requestId) {
 		console.log("requestId : " + requestId);
 
 		$('#requestIdHidden').val(requestId);
+		$('#pageNoHidden').val(currentPage);
 		$('#resendRequestModal').modal('show');
-	}
+	} */
+	
+	  document.getElementById("closeButton").onclick = function() {
+	    // 페이지 번호와 검색어를 URL에 포함시켜 리다이렉트
+	    var pageNo = ${param.pageNo != null ? param.pageNo : 1};
+	    var keyword = '${param.keyword != null ? param.keyword : ""}';  // JSP에서 처리된 값 전달
+	    
+	    // URL 구성
+	    var url = "requestcheck.do?pageNo=" + pageNo;
+	    if (keyword && keyword.trim() !== "") {
+	      url += "&keyword=" + encodeURIComponent(keyword);
+	    }
+
+	    // 리다이렉트
+	    window.location.href = url;
+	  };
 </script>
 
 
@@ -203,20 +306,37 @@ th {
 
 
 <script>
-=======
->>>>>>> f1eae7640b0a557523ab420e9447091e347564e4
 <!-- 요청 성공 시 모달 띄우기 -->
-<% if (request.getAttribute("resendRequestSuccess") != null) { %>
+	
+<%-- <%if (request.getAttribute("resendRequestSuccess") != null) {%>
 	$(document).ready(function() {
 		$('#RequestSuccessModal').modal('show');
-    });
-<% } %>
+	});
+<%}%> --%>
+
+<c:if test="${sessionScope.resendRequestSuccess}">
+
+	$(function() {
+    	$('#RequestSuccessModal').modal('show');
+	});
+	<c:remove var="resendRequestSuccess" scope="session" />
+
+</c:if>
 
 <!-- 요청 실패 시 모달 띄우기 -->
-<% if (request.getAttribute("resendRequestSuccess") == null) { %>
+
+<%-- <%if (request.getAttribute("resendRequestSuccess") == null) {%>
 	$(document).ready(function() {
 		$('#RequestFailModal').modal('show');
-    });
-<% } %>
+	});
+<%}%> --%>
+
+<c:if test="${sessionScope.resendRequestFail}">
+$(function() {
+    $('#RequestFailModal').modal('show');
+});
+<c:remove var="resendRequestFail" scope="session" />
+</c:if>
+
 </script>
 </html>
