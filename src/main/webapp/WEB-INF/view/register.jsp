@@ -1,4 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+	session="true"%>
 <!-- 회원가입 모달 -->
 <div class="modal fade" id="joinModal" tabindex="-1"
 	aria-labelledby="joinModalLabel" aria-hidden="true">
@@ -13,8 +14,12 @@
 
 				<div class="modal-body">
 					<div class="mb-3">
-						<label for="id" class="form-label">아이디</label> <input type="text"
-							class="form-control" id="id" name="id" required>
+						<label for="id" class="form-label">아이디</label>
+						<div class="input-group">
+							<input type="text" class="form-control" id="id" name="id"
+								required>
+							<button type="button" class="btn btn-secondary" id="checkIdBtn">중복확인</button>
+						</div>
 					</div>
 					<div class="mb-3">
 						<label for="password" class="form-label">비밀번호</label> <input
