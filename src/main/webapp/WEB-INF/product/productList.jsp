@@ -57,9 +57,50 @@ th, td {
 th {
 	background: #F8F8F8;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
+
+	<c:choose>
+		<c:when test="${empty param.pageNo}">
+			<c:set var="realCurrentPage" value="1" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="realCurrentPage" value="${param.pageNo}" />
+		</c:otherwise>
+	</c:choose>
+
+	<c:choose>
+		<c:when test="${not empty param.keyword}">
+			<!-- 검색 결과 화면인 경우 -->
+			<c:set var="fullUrl"
+				value="${pageContext.request.contextPath}/productsearch.do?keyword=${param.keyword}" />
+		</c:when>
+		<c:otherwise>
+			<!-- 일반 제품 목록 화면인 경우 -->
+			<c:set var="fullUrl"
+				value="${pageContext.request.contextPath}/list.do?pageNo=${realCurrentPage}" />
+		</c:otherwise>
+	</c:choose>
+
+	<c:set var="keywordParam" value="${param.keyword}" />
+
 	<div style="position: absolute; top: 20px; right: 20px;">
 		<a href="index.jsp" class="btn btn-primary">시작 페이지로</a>
 		<button class="btn btn-primary" type="button"
@@ -99,8 +140,8 @@ th {
 								<td>${product.productPrice}</td>
 								<td>${product.productQuantity}</td>
 								<td>
-									<button class="btn btn-success"
-										onclick="requestModal('${product.productId}', '${product.productQuantity}')">구매요청</button>
+									<button type="button" class="btn btn-success"
+										onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">구매요청</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -126,7 +167,8 @@ th {
 										<td>${product.productPrice}</td>
 										<td>${product.productQuantity}</td>
 										<td>
-											<button class="btn btn-success" onclick="requestModal('${product.productId}', '${product.productQuantity}')">구매요청</button>
+											<button type="button" class="btn btn-success"
+												onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">구매요청</button>
 										</td>
 									</tr>
 								</c:forEach>
@@ -141,46 +183,107 @@ th {
 					</c:otherwise>
 				</c:choose>
 
+<c:if test="${productPage.hasProducts}">
+    <tr>
+        <td colspan="6">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${productPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage - 5}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${productPage.startPage}" end="${productPage.endPage}">
+                            <li class="page-item ${pNo == productPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${pNo}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${productPage.endPage < productPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage + 5}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
+
 			</table>
 		</div>
 	</div>
 
-<jsp:include page="/WEB-INF/includes/requstModal.jsp" />
-<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<jsp:include page="/WEB-INF/includes/requstModal.jsp" />
+	<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-		<script>
-			// 요청 성공 시 모달 띄우기
-		<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
-			$(document).ready(function() {
-				$('#RequestSuccessModal').modal('show');
+	<script>
+		// 요청 성공 시 모달 띄우기
+	<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
+		$(document).ready(function() {
+			$('#RequestSuccessModal').modal('show');
+		});
+	<%session.removeAttribute("requestSuccess");%>
+		
+	<%}%>
+		// 요청 실패 시 모달 띄우기
+	<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
+		$(document).ready(function() {
+			$('#RequestFailModal').modal('show');
+		});
+	<%session.removeAttribute("requestFail");%>
+		
+	<%}%>
+		var currentPage = parseInt('${realCurrentPage}', 10) || 1;
+
+		function requestModal(productId, productQuantity, pageNo) {
+			console.log("productId : " + productId);
+			console.log("productQuantity : " + productQuantity);
+			console.log("pageNo : " + pageNo)
+
+			var fixedPageNo = pageNo || currentPage;
+
+			$('#quantity').attr({
+				min : 1,
+				max : parseInt(productQuantity),
+				value : 1
 			});
-		<%session.removeAttribute("requestSuccess");%>
-			
-		<%}%>
-			// 요청 실패 시 모달 띄우기
-		<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
-			$(document).ready(function() {
-				$('#RequestFailModal').modal('show');
-			});
-		<%session.removeAttribute("requestFail");%>
-			
-		<%}%>
-			function requestModal(productId, productQuantity) {
-				console.log("productId : " + productId);
-				console.log("productQuantity : " + productQuantity);
+			$('#productId').val(productId);
 
-				$('#quantity').attr({
-					min : 1,
-					max : parseInt(productQuantity),
-					value : 1
-				});
-				$('#productId').val(productId);
-				$('#requestModal').modal('show');
+			$('#pageNoHidden').val(fixedPageNo);
+			var keyword = '${empty keywordParam ? "" : keywordParam}';
+			var contextPath = '${pageContext.request.contextPath}';
+			if (keyword) {
+				$('#originalUrlHidden').val(
+						contextPath + '/productsearch.do?keyword='
+								+ encodeURIComponent(keyword));
+			} else {
+				$('#originalUrlHidden').val(
+						contextPath + '/list.do?pageNo=' + fixedPageNo);
 			}
-		</script>
+
+			$('#requestModal').modal('show');
+
+		}
+		$(document).ready(function() {
+		    $('#requestSuccessCloseBtn').on('click', function() {
+		        var keyword = '${empty keywordParam ? "" : keywordParam}';
+		        var currentPage = parseInt('${realCurrentPage}', 10) || 1;
+		        if (keyword) {
+		            window.location.href = 'productsearch.do?keyword=' + encodeURIComponent(keyword);
+		        } else {
+		            window.location.href = 'list.do?pageNo=' + currentPage;
+		        }
+		    });
+		});
+	</script>
+
 </body>
 </html>

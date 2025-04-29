@@ -80,23 +80,23 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-	<script>
-	$(document).ready(function() {
-		console.log("모달을 띄웁니다.");
+<script>
+    $(document).ready(function() {
+        console.log("모달을 띄웁니다.");
 
-		// 요청 성공 시 모달 띄우기
-		<% if (session.getAttribute("productRegisterSuccess") != null && (Boolean) session.getAttribute("productRegisterSuccess")) { %>
-			$('#productRegisterSuccessModal').modal('show');
-			<% session.removeAttribute("productRegisterSuccess"); %>
-		<% } %>
+        // 요청 성공 시 모달 띄우기
+        <% if (request.getAttribute("productRegisterSuccess") != null && (Boolean) request.getAttribute("productRegisterSuccess")) { %>
+            $('#productRegisterSuccessModal').modal('show');
+            <% request.removeAttribute("productRegisterSuccess"); %>
+        <% } %>
 
-		// 요청 실패 시 모달 띄우기
-		<% if (session.getAttribute("errorMessage") != null && (Boolean) session.getAttribute("errorMessage")) { %>
-			$('#productRegisterFailModal').modal('show');
-			<% session.removeAttribute("errorMessage"); %>
-		<% } %>
-	});
-	</script>
+        // 요청 실패 시 모달 띄우기
+        <% if (request.getAttribute("errorMessage") != null && (Boolean) request.getAttribute("errorMessage")) { %>
+            $('#productRegisterFailModal').modal('show');
+            <% request.removeAttribute("errorMessage"); %>
+        <% } %>
+    });
+</script>
 
 
 </body>

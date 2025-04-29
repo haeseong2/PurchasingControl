@@ -12,7 +12,7 @@ public class ProductRegisterHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		request.setCharacterEncoding("UTF-8");
         String productName     	    = request.getParameter("productName");
         String productPrice    	    = request.getParameter("productPrice");
         String productQuantity 	    = request.getParameter("productQuantity");
@@ -21,9 +21,9 @@ public class ProductRegisterHandler implements CommandHandler {
 		// ProductDTO 객체 생성
 		ProductDTO product = new ProductDTO();
 		product.setProductName(productName);
-		product.setProductDescription(productPrice);
-		product.setProductPrice(productQuantity);
-		product.setProductQuantity(productDescription);
+		product.setProductDescription(productDescription);
+		product.setProductPrice(productPrice);
+		product.setProductQuantity(productQuantity);
 
 		// ProductDAO를 통해 데이터베이스에 추가
 		int result = productDAO.insertProduct(product);
@@ -31,10 +31,10 @@ public class ProductRegisterHandler implements CommandHandler {
 
 		// 결과에 따라 성공적으로 추가된 후 제품 목록 페이지로 리다이렉트
 		if (result > 0) {
-			request.getSession().setAttribute("productRegisterSuccess", true );
+			request.setAttribute("productRegisterSuccess", true);
 		} else {
 			// 실패시 에러 메시지를 설정하고 등록 페이지로 이동
-			request.getSession().setAttribute("errorMessage", true);
+			request.setAttribute("errorMessage", true);
 		}
 		return "/WEB-INF/product/productRegister.jsp"; // 다시 제품 등록 폼으로 돌아감
 	}

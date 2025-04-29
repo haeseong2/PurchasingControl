@@ -1,5 +1,6 @@
 package requestManagement.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,12 +33,36 @@ public class RequestRejectHandler implements CommandHandler {
         
         if (rejected == 1) {
             System.out.println("요청 반려 성공");
+        
+            String pageNoStr = request.getParameter("pageNo");
             
-			List<RequestDTO> adminCheck = dao.adminCheck();
+            String keyword = request.getParameter("keyword");
+            
+            int pageNo = 1;
+            if (pageNoStr != null && !pageNoStr.isEmpty()) {
+                pageNo = Integer.parseInt(pageNoStr);
+            }
+            int size = 10;
+            int startRow = ((pageNo - 1) * size) + 1;
+            int endRow = startRow + size - 1;
+
+            List<RequestDTO> adminCheck = dao.adminCheck(startRow, endRow);
 			System.out.println("adminCheck : " + adminCheck);
 			
 			request.setAttribute("adminCheck", adminCheck);
+			request.setAttribute("pageNo", pageNo);
             request.setAttribute("rejectSuccess", true);
+            
+            
+            String redirectUrl = "requestAdmin.do?pageNo=" + pageNo;
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                redirectUrl += "&keyword=" + URLEncoder.encode(keyword, "UTF-8");
+            }
+            response.sendRedirect(redirectUrl);
+            
+            
+			/* response.sendRedirect("requestAdmin.do?pageNo=" + pageNo); */
+            return null;
         } else {
             System.out.println("요청 반려 실패");
             request.setAttribute("error", "요청 반려에 실패했습니다");

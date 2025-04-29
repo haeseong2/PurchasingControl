@@ -15,8 +15,8 @@ response.setDateHeader("Expires", 0); // Proxies
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>구매 요청 내역(관리자용)</title>
 <link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-  rel="stylesheet">
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -49,6 +49,22 @@ th, td {
 th {
 	background-color: #f1f1f1;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -61,14 +77,23 @@ th {
 
 	<div class="container">
 		<h2>구매 요청 내역(관리자용)</h2>
+		<input type="hidden" id="pageNoHidden"
+			value="${requestPage.currentPage}" /> 
+		<input type="hidden" id="keywordHidden" 
+		value="${param.keyword}" />
+		
 		<form action="requestAdmin.do" method="get" id="searchForm">
-				<input type="text" name="keyword" placeholder="요청자 검색"
-					style="width: 100%; padding: 5px; margin-bottom: 10px;">
-				<button type="submit"
-					style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
-					검색</button>
-				<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
-			</form>		
+			<input type="text" name="keyword" placeholder="요청자 검색"
+				style="width: 100%; padding: 5px; margin-bottom: 10px;">
+			<button type="submit"
+				style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
+				검색</button>
+			<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
+		</form>
+		<%-- <input type="hidden" id="pageNoHidden"
+			value="${requestPage.currentPage}" /> 
+		<input type="hidden" id="keywordHidden" 
+		value="${param.keyword}" /> --%>
 		<table>
 			<tr>
 				<th>요청 ID</th>
@@ -82,8 +107,8 @@ th {
 				<th>상태</th>
 			</tr>
 			<c:choose>
-				<c:when test="${not empty adminCheck}">
-					<c:forEach var="request" items="${adminCheck}">
+				<c:when test="${not empty requestPage.getRequestList()}">
+					<c:forEach var="request" items="${requestPage.getRequestList()}">
 						<tr>
 							<td>${request.requestId}</td>
 							<td>${request.id}</td>
@@ -91,13 +116,17 @@ th {
 							<td>${request.productId}</td>
 							<td>${request.prodoctName}</td>
 							<td>${request.requestQuantity}</td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${request.requestDate}" /></td>
-							<td><button class="btn btn-primary" onclick="requsetReason('${request.requestReason}')">요청내용보기</button></td>
-							
+							<td><fmt:formatDate pattern="yyyy-MM-dd"
+									value="${request.requestDate}" /></td>
+							<td><button class="btn btn-primary"
+									onclick="requsetReason('${request.requestReason}')">요청내용보기</button></td>
+
 							<c:if test="${request.requestStatus == '0'}">
-								<td> 
-									<button class="btn btn-success" onclick="approval('${request.requestId}')">승인</button>
-									<button class="btn btn-success" onclick="reject('${request.requestId}')">반려</button>
+								<td>
+									<button class="btn btn-success"
+										onclick="approval('${request.requestId}')">승인</button>
+									<button class="btn btn-success"
+										onclick="reject('${request.requestId}')">반려</button>
 								</td>
 							</c:if>
 						</tr>
@@ -110,54 +139,138 @@ th {
 					</tr>
 				</c:otherwise>
 			</c:choose>
+
+<c:if test="${requestPage.hasProducts}">
+    <tr>
+        <td colspan="9">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${requestPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${requestPage.startPage}" end="${requestPage.endPage}">
+                            <li class="page-item ${pNo == requestPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${pNo}&keyword=${param.keyword}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${requestPage.endPage < requestPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
+
 		</table>
 	</div>
+	<jsp:include page="/WEB-INF/includes/approvalConfirmModal.jsp" />
 	<jsp:include page="/WEB-INF/includes/rejectModal.jsp" />
 	<jsp:include page="/WEB-INF/includes/requsetReason.jsp" />
 	<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript">
+	/* var currentPage = "${param.pageNo != null ? param.pageNo : 1}"; */
+	var currentKeyword = "${param.keyword != null ? param.keyword : ''}";
+
 	// 요청내용보기 클릭
-	function requsetReason(requestReason){
+	function requsetReason(requestReason) {
 		console.log("requsetReason 접근 완료" + requestReason);
 		$("#requestReasonText").text(requestReason);
 		$("#requsetReason").modal('show');
 	}
 
 	// 승인 함수 호출
+	// 1) 승인 버튼 클릭 → 모달 띄우고 Hidden input에 값 세팅
 	function approval(requestId) {
-		console.log("requestId : " + requestId);
-		location.href = "approval.do?requestId=" + requestId;
+		var pageNo = document.getElementById("pageNoHidden").value;
+
+		var keyword = document.getElementById("keywordHidden").value;
+
+		$("#approveRequestIdHidden").val(requestId);
+		$("#approvePageNoHidden").val(pageNo);
+
+		$("#approveKeywordHidden").val(keyword);
+
+		$("#approvalConfirmModal").modal('show');
 	}
-	
+
+	// 2) 모달 “승인” 버튼 클릭 → 모달 닫고, alert 띄우고, 실제 승인 요청으로 이동
+	function submitApprove() {
+		var requestId = $("#approveRequestIdHidden").val();
+		var pageNo = $("#approvePageNoHidden").val();
+
+		var keyword = $("#approveKeywordHidden").val();
+
+		// 모달 닫기
+		$("#approvalConfirmModal").modal('hide');
+
+		// 승인 완료 알림
+		alert("승인이 완료되었습니다.");
+
+		// 실제 핸들러 호출
+		location.href = "approval.do?requestId="
+				+ encodeURIComponent(requestId) + "&pageNo="
+				+ encodeURIComponent(pageNo) 
+				+ "&keyword=" + encodeURIComponent(keyword);
+	}
+
+	// 페이지가 로드될 때 클릭 핸들러 연결
+	$(function() {
+		$("#confirmApproveBtn").on("click", submitApprove);
+	});
+
 	// 반려 함수 
 	function reject(requestId) {
 		console.log("requestId : " + requestId);
+		var pageNo = document.getElementById("pageNoHidden").value;
+
+		var keyword = document.getElementById("keywordHidden").value;
+
 		$("#requestIdHidden").val(requestId);
+		$("#rejectPageNoHidden").val(pageNo); // 현재 페이지 번호도 저장
+
+		$("#rejectKeywordHidden").val(keyword); 
+
 		$("#rejectModal").modal('show');
 	}
 
-    // 반려 사유 제출
-    function submitReject() {
+	// 반려 사유 제출
+	function submitReject() {
 		var rejectReason = $("#rejectReason").val();
 		var requestIdHidden = $("#requestIdHidden").val();
-		
+		var pageNo = $("#rejectPageNoHidden").val(); // 받아오기
+
+		var keyword = $("#rejectKeywordHidden").val();
+
 		console.log("rejectReason : " + rejectReason);
 		console.log("requestIdHidden : " + requestIdHidden);
 
-        if (rejectReason.trim() === '') {
-            alert('반려 사유를 입력해주세요.');
-            return;
-        }else{
-	        $('#rejectModal').modal('hide');
-	        alert('반려 사유가 제출되었습니다.');
-	        location.href = "reject.do?requestId=" + encodeURIComponent(requestIdHidden) +
-            "&rejectReason=" + encodeURIComponent(rejectReason);	
-        }
-    }
+		if (rejectReason.trim() === '') {
+			alert('반려 사유를 입력해주세요.');
+			return;
+		} else {
+			$('#rejectModal').modal('hide');
+			alert('반려 사유가 제출되었습니다.');
+			location.href = "reject.do?requestId="
+					+ encodeURIComponent(requestIdHidden) + "&rejectReason="
+					+ encodeURIComponent(rejectReason) + "&pageNo="
+					+ encodeURIComponent(pageNo) // 페이지 번호도 같이 넘기기
+					 + "&keyword=" + encodeURIComponent(keyword);
+		}
+	}
 </script>
 </html>

@@ -13,7 +13,8 @@
 	        정산이 완료되었습니다.
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton">닫기</button>
+	        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button> -->
 	      </div>
 	    </div>
 	  </div>
