@@ -1,122 +1,157 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
-<%@ page language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+	session="true"%>
+<%@ page language="java"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>구매관리 시스템</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-  <style>
-    .offcanvas-end {
-      width: 260px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>구매관리 시스템</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- </head> -->
+<style>
+.offcanvas-end {
+	width: 260px;
+}
+</style>
 </head>
 <body>
-<div class="container text-center mt-5">
-  <h1>구매관리 시스템</h1>
-  <%
-    String username = (String) session.getAttribute("user");
-    String userRole = (String) session.getAttribute("userRole"); // "0" = 관리자, "1" = 사용자
-    System.out.println(userRole);
-    if (username == null) {
-  %>
-    <button class="btn btn-primary me-2" onclick="$('#loginModal').modal('show')">로그인</button>
-    <button class="btn btn-success" onclick="$('#joinModal').modal('show')">회원가입</button>
-  <%
-    } else {
-  %>
-    <p><strong><%= username %></strong> 님 환영합니다.</p>
-    <a href="logout.do" class="btn btn-danger">로그아웃</a>
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰ 카테고리</button>
-  <%
-    }
-  %>
-</div>
-<!-- 로그인 모달 -->
-<jsp:include page="/WEB-INF/view/login.jsp" />
-<!-- 회원가입 모달 -->
-<jsp:include page="/WEB-INF/view/register.jsp" />
-<!-- 회원가입 성공 모달 -->
-<div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">회원가입이 완료되었습니다.</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <a href="login.jsp" class="btn btn-primary">로그인</a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 로그인 실패 모달 -->
-<div class="modal fade" id="loginFailModal" tabindex="-1" aria-labelledby="loginFailModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginFailModalLabel">로그인 실패</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">아이디 또는 비밀번호가 일치하지 않습니다.</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container mt-4">
-  <table class="table table-bordered table-striped text-center mx-auto" style="width: 80%;">
-    <thead class="table-dark">
-      <tr>
-        <th>요청자</th>
-        <th>제품명</th>
-        <th>정산완료일자</th>
-        <th>제품가격</th>
-      </tr>
-    </thead>
-<tbody>
-  <c:forEach var="item" items="${requestResult}">
-    <tr>
-      <td>${item.userName}</td>
-      <td>${item.productName}</td>
-      <td>${item.settlementDate}</td>
-      <td>${item.productPrice}</td>
-    </tr>
-  </c:forEach>
-</tbody>
-  </table>
-</div>
-<!-- 스크립트 -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  <% if (request.getAttribute("registerSuccess") != null && (boolean) request.getAttribute("registerSuccess")) { %>
-    $(document).ready(function () {
-      $('#registerSuccessModal').modal('show');
-    });
-    	
-  <% } %>
-  <% if (request.getAttribute("loginFail") != null && (boolean) request.getAttribute("loginFail")) { %>
-    $(document).ready(function () {
-      $('#loginFailModal').modal('show');
-    });
-  <% } %>
-</script>
-<jsp:include page="/WEB-INF/view/register.jsp" />
-<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
+	<div class="container text-center mt-5">
+		<h1>구매관리 시스템</h1>
+		<%
+		String username = (String) session.getAttribute("user");
+		String userRole = (String) session.getAttribute("userRole"); // "0" = 관리자, "1" = 사용자
+		System.out.println(userRole);
+		if (username == null) {
+		%>
+		<button class="btn btn-primary me-2"
+			onclick="$('#loginModal').modal('show')">로그인</button>
+		<button class="btn btn-success"
+			onclick="$('#joinModal').modal('show')">회원가입</button>
+		<%
+		} else {
+		%>
+		<p>
+			<strong><%=username%></strong> 님 환영합니다.
+		</p>
+		<a href="logout.do" class="btn btn-danger">로그아웃</a>
+		<button class="btn btn-primary" type="button"
+			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
+			카테고리</button>
+		<%
+		}
+		%>
+	</div>
+	<!-- 로그인 모달 -->
+	<jsp:include page="/WEB-INF/view/login.jsp" />
+	<!-- 회원가입 모달 -->
+	<jsp:include page="/WEB-INF/view/register.jsp" />
+	<!-- 회원가입 성공 모달 -->
+	<div class="modal fade" id="registerSuccessModal" tabindex="-1"
+		aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">회원가입이 완료되었습니다.</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+					<a href="login.jsp" class="btn btn-primary">로그인</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 로그인 실패 모달 -->
+	<div class="modal fade" id="loginFailModal" tabindex="-1"
+		aria-labelledby="loginFailModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="loginFailModalLabel">로그인 실패</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<table class="table table-bordered table-striped text-center mx-auto"
+			style="width: 80%;">
+			<thead class="table-dark">
+				<tr>
+					<th>요청자</th>
+					<th>제품명</th>
+					<th>정산완료일자</th>
+					<th>제품가격</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%--   <c:forEach var="item" items="${requestResult}"> --%>
+				<c:forEach var="item" items="${index}">
+					<tr>
+						<td>${item.userName}</td>
+						<td>${item.productName}</td>
+						<td>${item.settlementDate}</td>
+						<td>${item.productPrice}</td>
+					</tr>
+				</c:forEach>
+
+
+				<c:if test="${indexPage.hasProducts}">
+					<tr>
+						<td colspan="4"><c:if test="${indexPage.startPage > 5}">
+								<a href="index.do?pageNo=${indexPage.startPage - 5}">[이전]</a>
+							</c:if> <c:forEach var="pNo" begin="${indexPage.startPage}"
+								end="${indexPage.endPage}">
+								<a href="index.do?pageNo=${pNo}">[${pNo}]</a>
+							</c:forEach> <c:if test="${indexPage.endPage < indexPage.totalPages}">
+								<a href="index.do?pageNo=${indexPage.startPage + 5}">[다음]</a>
+							</c:if></td>
+					</tr>
+				</c:if>
+
+			</tbody>
+		</table>
+	</div>
+	<!-- 스크립트 -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		
+	<%if (request.getAttribute("registerSuccess") != null && (boolean) request.getAttribute("registerSuccess")) {%>
+		$(document).ready(function() {
+			$('#registerSuccessModal').modal('show');
+		});
+	<%}%>
+		
+	<%if (request.getAttribute("loginFail") != null && (boolean) request.getAttribute("loginFail")) {%>
+		$(document).ready(function() {
+			$('#loginFailModal').modal('show');
+		});
+	<%}%>
+		
+	</script>
+	<jsp:include page="/WEB-INF/view/register.jsp" />
+	<jsp:include page="/WEB-INF/includes/menuCanvas.jsp" />
 </body>
 
 <script type="text/javascript">
-$(document).ready(function () {
-    setInterval(function () {
-        location.href = "index.do";
-    }, 100000); // 300,000ms = 300초 = 5분
-});
+	$(document).ready(function() {
+		setInterval(function() {
+			location.href = "index.do";
+		}, 100000); // 300,000ms = 300초 = 5분
+	});
 </script>
 </html>
