@@ -68,6 +68,22 @@ th {
 .purchase-button:hover {
 	background-color: #00796B;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -153,20 +169,35 @@ th {
 				</c:otherwise>
 			</c:choose>
 
-			<c:if test="${requestPage.hasProducts}">
-				<tr>
-					<td colspan="7"><c:if test="${requestPage.startPage > 5}">
-							<a
-								href="requestcheck.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">[이전]</a>
-						</c:if> <c:forEach var="pNo" begin="${requestPage.startPage}"
-							end="${requestPage.endPage}">
-							<a href="requestcheck.do?pageNo=${pNo}&keyword=${param.keyword}">[${pNo}]</a>
-						</c:forEach> <c:if test="${requestPage.endPage < requestPage.totalPages}">
-							<a
-								href="requestcheck.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">[다음]</a>
-						</c:if></td>
-				</tr>
-			</c:if>
+<c:if test="${requestPage.hasProducts}">
+    <tr>
+        <td colspan="7">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${requestPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${requestPage.startPage}" end="${requestPage.endPage}">
+                            <li class="page-item ${pNo == requestPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${pNo}&keyword=${param.keyword}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${requestPage.endPage < requestPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
 
 		</table>
 	</div>

@@ -58,6 +58,22 @@ th, td {
 th {
 	background: #F8F8F8;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -168,18 +184,35 @@ th {
 					</c:otherwise>
 				</c:choose>
 
-				<c:if test="${productPage.hasProducts}">
-					<tr>
-						<td colspan="6"><c:if test="${productPage.startPage > 5}">
-								<a href="list.do?pageNo=${productPage.startPage - 5}">[이전]</a>
-							</c:if> <c:forEach var="pNo" begin="${productPage.startPage}"
-								end="${productPage.endPage}">
-								<a href="list.do?pageNo=${pNo}">[${pNo}]</a>
-							</c:forEach> <c:if test="${productPage.endPage < productPage.totalPages}">
-								<a href="list.do?pageNo=${productPage.startPage + 5}">[다음]</a>
-							</c:if></td>
-					</tr>
-				</c:if>
+<c:if test="${productPage.hasProducts}">
+    <tr>
+        <td colspan="6">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${productPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage - 5}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${productPage.startPage}" end="${productPage.endPage}">
+                            <li class="page-item ${pNo == productPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${pNo}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${productPage.endPage < productPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage + 5}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
 
 			</table>
 		</div>

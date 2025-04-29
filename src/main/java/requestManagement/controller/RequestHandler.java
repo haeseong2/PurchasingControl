@@ -16,6 +16,7 @@ public class RequestHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
 		System.out.println("RequestHandler 접근 성공");
 		HttpSession session = request.getSession();
 

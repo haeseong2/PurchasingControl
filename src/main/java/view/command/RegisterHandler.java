@@ -9,7 +9,8 @@ public class RegisterHandler implements CommandHandler {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("RegisterHandler 접근 성공");
+    	request.setCharacterEncoding("UTF-8");
+    	System.out.println("RegisterHandler 접근 성공");
         
         String id       = request.getParameter("id");
         String name     = request.getParameter("name");

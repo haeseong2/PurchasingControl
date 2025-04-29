@@ -15,6 +15,22 @@
 .offcanvas-end {
 	width: 260px;
 }
+
+/* 페이징 hover 효과 */
+.pagination .page-link {
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination .page-link:hover {
+    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    color: #fff;
+}
+
+/* 현재 페이지 active 스타일 */
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
 </style>
 </head>
 <body>
@@ -108,18 +124,35 @@
 				</c:forEach>
 
 
-				<c:if test="${indexPage.hasProducts}">
-					<tr>
-						<td colspan="4"><c:if test="${indexPage.startPage > 5}">
-								<a href="index.do?pageNo=${indexPage.startPage - 5}">[이전]</a>
-							</c:if> <c:forEach var="pNo" begin="${indexPage.startPage}"
-								end="${indexPage.endPage}">
-								<a href="index.do?pageNo=${pNo}">[${pNo}]</a>
-							</c:forEach> <c:if test="${indexPage.endPage < indexPage.totalPages}">
-								<a href="index.do?pageNo=${indexPage.startPage + 5}">[다음]</a>
-							</c:if></td>
-					</tr>
-				</c:if>
+<c:if test="${indexPage.hasProducts}">
+    <tr>
+        <td colspan="4">
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination gap-2">
+                        <c:if test="${indexPage.startPage > 5}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage - 5}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="pNo" begin="${indexPage.startPage}" end="${indexPage.endPage}">
+                            <li class="page-item ${pNo == indexPage.currentPage ? 'active' : ''}">
+                                <a class="page-link rounded-pill" href="index.do?pageNo=${pNo}">${pNo}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${indexPage.endPage < indexPage.totalPages}">
+                            <li class="page-item">
+                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage + 5}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+            </div>
+        </td>
+    </tr>
+</c:if>
 
 			</tbody>
 		</table>
@@ -151,7 +184,7 @@
 	$(document).ready(function() {
 		setInterval(function() {
 			location.href = "index.do";
-		}, 100000); // 300,000ms = 300초 = 5분
+		}, 30000); // ex) 300,000ms = 300초 = 5분
 	});
 </script>
 </html>
