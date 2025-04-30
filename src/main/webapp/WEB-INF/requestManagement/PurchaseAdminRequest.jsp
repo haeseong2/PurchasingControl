@@ -236,7 +236,6 @@ th {
 	function reject(requestId) {
 		console.log("requestId : " + requestId);
 		var pageNo = document.getElementById("pageNoHidden").value;
-
 		var keyword = document.getElementById("keywordHidden").value;
 
 		$("#requestIdHidden").val(requestId);
@@ -252,7 +251,6 @@ th {
 		var rejectReason = $("#rejectReason").val();
 		var requestIdHidden = $("#requestIdHidden").val();
 		var pageNo = $("#rejectPageNoHidden").val(); // 받아오기
-
 		var keyword = $("#rejectKeywordHidden").val();
 
 		console.log("rejectReason : " + rejectReason);
