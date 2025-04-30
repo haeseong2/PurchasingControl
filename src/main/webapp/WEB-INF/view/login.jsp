@@ -1,26 +1,26 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
   String userStatus = (String) session.getAttribute("userRole");
-  if (userStatus == null) userStatus = "1"; // 기본은 일반 사용자
+  if (userStatus == null) userStatus = "1"; // 基本は一般ユーザー
 %>
 
 
 
-<!-- 메뉴 모달 -->
+<!-- メニューモーダル -->
 <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="menuModalLabel">메뉴</h5>
+        <h5 class="modal-title" id="menuModalLabel">メニュー</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <ul class="list-group">
-          <li class="list-group-item"><a href="list.do">제품</a></li>
-          <li class="list-group-item"><a href="#">요청</a></li>
+          <li class="list-group-item"><a href="list.do">製品</a></li>
+          <li class="list-group-item"><a href="#">リクエスト</a></li>
           <% if ("A".equals(userStatus)) { %>
-          <li class="list-group-item"><a href="#">요청목록</a></li>
-          <!-- <li class="list-group-item"><a href="#">발주</a></li> -->
+          <li class="list-group-item"><a href="#">リクエスト一覧</a></li>
+          <!-- <li class="list-group-item"><a href="#">発注</a></li> -->
           <% } %>
         </ul>
       </div>
@@ -34,16 +34,16 @@
     <div class="modal-content">
       <form action="login.do" method="post">
         <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">로그인</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+          <h5 class="modal-title" id="loginModalLabel">ログイン</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
         </div>
         <div class="modal-body px-4 text-start">
           <div class="mb-3">
-            <label class="form-label">아이디</label>
+            <label class="form-label">ID</label>
             <input type="text" name="username" class="form-control" required />
           </div>
           <div class="mb-3">
-            <label class="form-label">비밀번호</label>
+            <label class="form-label">パスワード</label>
             <input type="password" name="password" class="form-control" required />
           </div>
 
@@ -57,7 +57,7 @@
           %>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">로그인</button>
+          <button type="submit" class="btn btn-primary">ログイン</button>
         </div>
       </form>
     </div>

@@ -35,7 +35,7 @@ public class IndexHandler implements CommandHandler {
 	
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("ProductListHandler 접근 성공");
+		System.out.println("ProductListHandler アクセス成功");
         request.setCharacterEncoding("UTF-8");
         IndexDAO dao = new IndexDAO();
         

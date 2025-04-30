@@ -12,7 +12,7 @@ response.setDateHeader("Expires", 0); // Proxies
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>구매 요청 내역(관리자용)</title>
+<title>購入リクエスト履歴（管理者用）</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -68,25 +68,25 @@ th {
 </head>
 <body>
 	<div style="position: absolute; top: 20px; right: 20px;">
-		<a href="index.jsp" class="btn btn-primary">시작 페이지로</a>
+		<a href="index.jsp" class="btn btn-primary">ホームに戻る</a>
 		<button class="btn btn-primary" type="button"
 			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
-			카테고리</button>
+			カテゴリ</button>
 	</div>
 
 	<div class="container">
-		<h2>구매 요청 내역(관리자용)</h2>
+		<h2>購入リクエスト履歴（管理者用）</h2>
 		<input type="hidden" id="pageNoHidden"
 			value="${requestPage.currentPage}" /> 
 		<input type="hidden" id="keywordHidden" 
 		value="${param.keyword}" />
 		
 		<form action="requestAdmin.do" method="get" id="searchForm">
-			<input type="text" name="keyword" placeholder="요청자 검색"
+			<input type="text" name="keyword" placeholder="申請者を検索"
 				style="width: 100%; padding: 5px; margin-bottom: 10px;">
 			<button type="submit"
 				style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
-				검색</button>
+				検索</button>
 			<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
 		</form>
 		<%-- <input type="hidden" id="pageNoHidden"
@@ -95,15 +95,15 @@ th {
 		value="${param.keyword}" /> --%>
 		<table>
 			<tr>
-				<th>요청 ID</th>
-				<th>요청자 ID</th>
-				<th>요청자</th>
-				<th>제품 ID</th>
-				<th>제품명</th>
-				<th>요청 수량</th>
-				<th>요청 일자</th>
-				<th>요청 내용</th>
-				<th>상태</th>
+				<th>リクエスト ID</th>
+				<th>申請者 ID</th>
+				<th>申請者</th>
+				<th>製品 ID</th>
+				<th>製品名</th>
+				<th>リクエスト数量</th>
+				<th>リクエスト日</th>
+				<th>リクエスト内容</th>
+				<th>ステータス</th>
 			</tr>
 			<c:choose>
 				<c:when test="${not empty requestPage.getRequestList()}">
@@ -118,14 +118,14 @@ th {
 							<td><fmt:formatDate pattern="yyyy-MM-dd"
 									value="${request.requestDate}" /></td>
 							<td><button class="btn btn-primary"
-									onclick="requsetReason('${request.requestReason}')">요청내용보기</button></td>
+									onclick="requsetReason('${request.requestReason}')">内容を表示</button></td>
 
 							<c:if test="${request.requestStatus == '0'}">
 								<td>
 									<button class="btn btn-success"
-										onclick="approval('${request.requestId}')">승인</button>
+										onclick="approval('${request.requestId}')">承認</button>
 									<button class="btn btn-success"
-										onclick="reject('${request.requestId}')">반려</button>
+										onclick="reject('${request.requestId}')">差し戻し</button>
 								</td>
 							</c:if>
 						</tr>
@@ -133,8 +133,7 @@ th {
 				</c:when>
 				<c:otherwise>
 					<tr>
-						<td colspan="9" style="text-align: center; color: red;">목록이
-							없습니다</td>
+						<td colspan="9" style="text-align: center; color: red;">リストがありません</td>
 					</tr>
 				</c:otherwise>
 			</c:choose>
@@ -147,7 +146,7 @@ th {
                     <ul class="pagination gap-2">
                         <c:if test="${requestPage.startPage > 5}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">이전</a>
+                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">前へ</a>
                             </li>
                         </c:if>
 
@@ -159,7 +158,7 @@ th {
 
                         <c:if test="${requestPage.endPage < requestPage.totalPages}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">다음</a>
+                                <a class="page-link rounded-pill" href="requestAdmin.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">次へ</a>
                             </li>
                         </c:if>
                     </ul>
@@ -185,15 +184,15 @@ th {
 	/* var currentPage = "${param.pageNo != null ? param.pageNo : 1}"; */
 	var currentKeyword = "${param.keyword != null ? param.keyword : ''}";
 
-	// 요청내용보기 클릭
+	// リクエスト内容を見る」クリック時の処理
 	function requsetReason(requestReason) {
-		console.log("requsetReason 접근 완료" + requestReason);
+		console.log("requsetReason アクセス完了" + requestReason);
 		$("#requestReasonText").text(requestReason);
 		$("#requsetReason").modal('show');
 	}
 
-	// 승인 함수 호출
-	// 1) 승인 버튼 클릭 → 모달 띄우고 Hidden input에 값 세팅
+	// 承認処理の呼び出し
+	// 1) 承認ボタンをクリック → モーダルを表示し、Hidden input に値を設定
 	function approval(requestId) {
 		var pageNo = document.getElementById("pageNoHidden").value;
 
@@ -207,32 +206,32 @@ th {
 		$("#approvalConfirmModal").modal('show');
 	}
 
-	// 2) 모달 “승인” 버튼 클릭 → 모달 닫고, alert 띄우고, 실제 승인 요청으로 이동
+	// 2) モーダル内の「承認」ボタンをクリック → モーダルを閉じ、アラート表示、承認処理へ遷移
 	function submitApprove() {
 		var requestId = $("#approveRequestIdHidden").val();
 		var pageNo = $("#approvePageNoHidden").val();
 
 		var keyword = $("#approveKeywordHidden").val();
 
-		// 모달 닫기
+		// モーダルを閉じる
 		$("#approvalConfirmModal").modal('hide');
 
-		// 승인 완료 알림
-		alert("승인이 완료되었습니다.");
+		// 承認完了の通知
+		alert("承認が完了しました。");
 
-		// 실제 핸들러 호출
+		// 承認処理呼び出し
 		location.href = "approval.do?requestId="
 				+ encodeURIComponent(requestId) + "&pageNo="
 				+ encodeURIComponent(pageNo) 
 				+ "&keyword=" + encodeURIComponent(keyword);
 	}
 
-	// 페이지가 로드될 때 클릭 핸들러 연결
+	// ページ読み込み時にクリックイベントを設定
 	$(function() {
 		$("#confirmApproveBtn").on("click", submitApprove);
 	});
 
-	// 반려 함수 
+	// 差し戻し処理の呼び出し 
 	function reject(requestId) {
 		console.log("requestId : " + requestId);
 		var pageNo = document.getElementById("pageNoHidden").value;
@@ -240,18 +239,18 @@ th {
 		var keyword = document.getElementById("keywordHidden").value;
 
 		$("#requestIdHidden").val(requestId);
-		$("#rejectPageNoHidden").val(pageNo); // 현재 페이지 번호도 저장
+		$("#rejectPageNoHidden").val(pageNo); // 現在のページ番号を保存
 
 		$("#rejectKeywordHidden").val(keyword); 
 
 		$("#rejectModal").modal('show');
 	}
 
-	// 반려 사유 제출
+	//差し戻し理由を送信
 	function submitReject() {
 		var rejectReason = $("#rejectReason").val();
 		var requestIdHidden = $("#requestIdHidden").val();
-		var pageNo = $("#rejectPageNoHidden").val(); // 받아오기
+		var pageNo = $("#rejectPageNoHidden").val(); // ページ番号を取得
 
 		var keyword = $("#rejectKeywordHidden").val();
 
@@ -259,15 +258,15 @@ th {
 		console.log("requestIdHidden : " + requestIdHidden);
 
 		if (rejectReason.trim() === '') {
-			alert('반려 사유를 입력해주세요.');
+			alert('差し戻し理由を入力してください。');
 			return;
 		} else {
 			$('#rejectModal').modal('hide');
-			alert('반려 사유가 제출되었습니다.');
+			alert('差し戻し理由が送信されました。');
 			location.href = "reject.do?requestId="
 					+ encodeURIComponent(requestIdHidden) + "&rejectReason="
 					+ encodeURIComponent(rejectReason) + "&pageNo="
-					+ encodeURIComponent(pageNo) // 페이지 번호도 같이 넘기기
+					+ encodeURIComponent(pageNo) // ページ番号も一緒に渡す
 					 + "&keyword=" + encodeURIComponent(keyword);
 		}
 	}

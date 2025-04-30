@@ -15,22 +15,13 @@ public class RequestAdminHandler implements CommandHandler {
 	private RequestDAO dao = new RequestDAO();
 	private int size = 10;
 
-	/*
-	 * public RequestPageDTO getRequestAdminPage(String id, int pageNum) { int
-	 * firstRow = 0; int endRow = 0; int total = dao.selectCount(id);
-	 * List<RequestDTO> requestList = new ArrayList<>(); try { if (total > 0) {
-	 * firstRow = (pageNum - 1) * size + 1; endRow = pageNum * size; requestList =
-	 * dao.adminCheck(firstRow, endRow); } return new RequestPageDTO(total, pageNum,
-	 * size, requestList); } catch (Exception e) { e.printStackTrace(); return new
-	 * RequestPageDTO(total, pageNum, size, requestList); } }
-	 */
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("RequestAdminHandler 접근 성공");
+		System.out.println("RequestAdminHandler アクセス成功");
 		request.setCharacterEncoding("UTF-8");
 
 		String keyword = request.getParameter("keyword");
-		System.out.println("검색할 요청자 이름 : " + keyword);
+		System.out.println("検索する申請者の名前 : " + keyword);
 
 		String pageNoVal = request.getParameter("pageNo");
 		int pageNo = 1;
@@ -49,24 +40,24 @@ public class RequestAdminHandler implements CommandHandler {
 		int endRow = pageNo * size;
 
 		if (keyword != null && !keyword.trim().isEmpty()) {
-			// 검색어가 있을 때 (상태 0 + 이름 검색)
+			// 検索語がある場合 (ステータス0 + 名前検索)
 			total = dao.selectCountByKeyword(keyword);
 			list = dao.adminCheckSearch(keyword, firstRow, endRow);
 		} else {
-			// 검색어 없을 때 (상태 0 기준)
+			// 検索語がない場合 (ステータス0基準)
 			total = dao.selectAllCount();
 			list = dao.adminCheck(firstRow, endRow);
 		}
 
-		// ← 빈 페이지일 때 이전 페이지로 Redirect
+		// ← 空のページの場合、前のページに Redirect
 		if (list.isEmpty() && total > 0 && pageNo > 1) {
-			// keyword가 있을 경우 queryString에 포함
+			// keywordがある場合はqueryStringに含める
 			StringBuilder redirectUrl = new StringBuilder("requestAdmin.do?pageNo=" + (pageNo - 1));
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				redirectUrl.append("&keyword=").append(URLEncoder.encode(keyword, "UTF-8"));
 			}
 			response.sendRedirect(redirectUrl.toString());
-			return null; // forward 막기
+			return null; // forward 防ぐ
 		}
 
 		requestPage = new RequestPageDTO(total, pageNo, size, list);

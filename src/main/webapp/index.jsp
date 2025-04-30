@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>구매관리 시스템</title>
+<title>購入管理システム</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -35,7 +35,7 @@
 </head>
 <body>
 	<div class="container text-center mt-5">
-		<h1>구매관리 시스템</h1>
+		<h1>購入管理システム</h1>
 		<%
 		String username = (String) session.getAttribute("user");
 		String userRole = (String) session.getAttribute("userRole"); // "0" = 관리자, "1" = 사용자
@@ -43,73 +43,74 @@
 		if (username == null) {
 		%>
 		<button class="btn btn-primary me-2"
-			onclick="$('#loginModal').modal('show')">로그인</button>
+			onclick="$('#loginModal').modal('show')">ログイン</button>
 		<button class="btn btn-success"
-			onclick="$('#joinModal').modal('show')">회원가입</button>
+			onclick="$('#joinModal').modal('show')">会員登録</button>
 		<%
 		} else {
 		%>
 		<p>
-			<strong><%=username%></strong> 님 환영합니다.
+			<strong><%=username%></strong> さん、ようこそ。
 		</p>
-		<a href="logout.do" class="btn btn-danger">로그아웃</a>
+		<a href="logout.do" class="btn btn-danger">Logout</a>
 		<button class="btn btn-primary" type="button"
 			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
-			카테고리</button>
+			カテゴリー</button>
 		<%
 		}
 		%>
 	</div>
-	<!-- 로그인 모달 -->
+	<!-- Login モーダル -->
 	<jsp:include page="/WEB-INF/view/login.jsp" />
-	<!-- 회원가입 모달 -->
+	<!-- 会員登録 モーダル -->
 	<jsp:include page="/WEB-INF/view/register.jsp" />
-	<!-- 회원가입 성공 모달 -->
+	<!-- 会員登録成功 モーダル -->
 	<div class="modal fade" id="registerSuccessModal" tabindex="-1"
 		aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공</h5>
+					<h5 class="modal-title" id="registerSuccessModalLabel">会員登録成功</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body">회원가입이 완료되었습니다.</div>
+				<div class="modal-body">会員登録が完了しました。</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">닫기</button>
-					<a href="login.jsp" class="btn btn-primary">로그인</a>
+						data-bs-dismiss="modal">閉じる</button>
+					<a href="login.jsp" class="btn btn-primary">Login</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- 로그인 실패 모달 -->
+	<!-- Login 失敗モーダル -->
 	<div class="modal fade" id="loginFailModal" tabindex="-1"
 		aria-labelledby="loginFailModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="loginFailModalLabel">로그인 실패</h5>
+					<h5 class="modal-title" id="loginFailModalLabel">ログイン 失敗</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+				<div class="modal-body">IDまたはパスワードが一致しません。</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">닫기</button>
+						data-bs-dismiss="modal">閉じる</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- 表のヘッダー -->
 	<div class="container mt-4">
 		<table class="table table-bordered table-striped text-center mx-auto"
 			style="width: 80%;">
 			<thead class="table-dark">
 				<tr>
-					<th>요청자</th>
-					<th>제품명</th>
-					<th>정산완료일자</th>
-					<th>제품가격</th>
+					<th>申請者</th>
+					<th>製品名</th>
+					<th>精算完了日</th>
+					<th>製品価格</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -132,7 +133,7 @@
                     <ul class="pagination gap-2">
                         <c:if test="${indexPage.startPage > 5}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage - 5}">이전</a>
+                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage - 5}">前へ</a>
                             </li>
                         </c:if>
 
@@ -144,7 +145,7 @@
 
                         <c:if test="${indexPage.endPage < indexPage.totalPages}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage + 5}">다음</a>
+                                <a class="page-link rounded-pill" href="index.do?pageNo=${indexPage.startPage + 5}">次へ</a>
                             </li>
                         </c:if>
                     </ul>
@@ -157,7 +158,7 @@
 			</tbody>
 		</table>
 	</div>
-	<!-- 스크립트 -->
+	<!-- ページネーション -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

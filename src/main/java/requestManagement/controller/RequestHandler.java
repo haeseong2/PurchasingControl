@@ -17,7 +17,7 @@ public class RequestHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("UTF-8");
-		System.out.println("RequestHandler 접근 성공");
+		System.out.println("RequestHandler アクセス成功");
 		HttpSession session = request.getSession();
 
 		String id = (String) session.getAttribute("user");
@@ -32,10 +32,10 @@ public class RequestHandler implements CommandHandler {
 		System.out.println("quantity :" + quantity);
 		System.out.println("reason :" + reason);
 
-		// 1) 모달에서 넘어온 원래 URL
+		// 1) モーダルから送られた元のURL
 		String originalUrl = request.getParameter("originalUrl");
 		if (originalUrl == null || originalUrl.trim().isEmpty()) {
-			// fallback: 리스트 첫 페이지
+			// デフォルト値1を設定
 			originalUrl = request.getContextPath() + "/list.do?pageNo=1";
 		}
 
@@ -52,19 +52,16 @@ public class RequestHandler implements CommandHandler {
 
 		String pageNo = request.getParameter("pageNo");
 		if (pageNo == null || pageNo.trim().isEmpty()) {
-			pageNo = "1"; // 기본값 1 세팅
+			pageNo = "1"; // デフォルト値1を設定
 		}
 
-		/* session.setAttribute("currentPage", pageNo); */ 
 
 		if (result > 0) {
 			session.setAttribute("requestSuccess", true);
-			//response.sendRedirect(request.getContextPath() + "/list.do?pageNo=" + pageNo);
 			response.sendRedirect(originalUrl);
 		} else {
 			session.setAttribute("requestFail", true);
-			System.out.println("재고 차감 불가");
-			//response.sendRedirect(request.getContextPath() + "/list.do?pageNo=" + pageNo);
+			System.out.println("在庫の減算はできません");
 			response.sendRedirect(originalUrl);
 		}
 		return null;

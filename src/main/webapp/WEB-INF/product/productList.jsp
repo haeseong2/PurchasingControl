@@ -12,7 +12,7 @@ response.setDateHeader("Expires", 0); // Proxies
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>제품 목록 및 관리</title>
+<title>製品リストと管理</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -26,7 +26,7 @@ body {
 
 .container {
 	width: 100%;
-	max-width: 800px; /* 최대 너비 설정 */
+	max-width: 800px; /* 最大幅設定 */
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -59,16 +59,16 @@ th {
 	background: #F8F8F8;
 }
 
-/* 페이징 hover 효과 */
+/* ページネーションのホバー効果 */
 .pagination .page-link {
     transition: background-color 0.3s, color 0.3s;
 }
 .pagination .page-link:hover {
-    background-color: #0d6efd; /* 부트스트랩 primary 색상 */
+    background-color: #0d6efd; /* Bootstrapのprimary色 */
     color: #fff;
 }
 
-/* 현재 페이지 active 스타일 */
+/* 現在ページのactiveスタイル */
 .pagination .page-item.active .page-link {
     background-color: #0d6efd;
     border-color: #0d6efd;
@@ -89,12 +89,12 @@ th {
 
 	<c:choose>
 		<c:when test="${not empty param.keyword}">
-			<!-- 검색 결과 화면인 경우 -->
+			<!-- 検索結果画面の場合 -->
 			<c:set var="fullUrl"
 				value="${pageContext.request.contextPath}/productsearch.do?keyword=${param.keyword}" />
 		</c:when>
 		<c:otherwise>
-			<!-- 일반 제품 목록 화면인 경우 -->
+			<!-- 通常の製品リスト画面の場合 -->
 			<c:set var="fullUrl"
 				value="${pageContext.request.contextPath}/list.do?pageNo=${realCurrentPage}" />
 		</c:otherwise>
@@ -103,32 +103,31 @@ th {
 	<c:set var="keywordParam" value="${param.keyword}" />
 
 	<div style="position: absolute; top: 20px; right: 20px;">
-		<a href="index.jsp" class="btn btn-primary">시작 페이지로</a>
+		<a href="index.jsp" class="btn btn-primary">ホームページへ</a>
 		<button class="btn btn-primary" type="button"
 			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
-			카테고리</button>
+			カテゴリ</button>
 	</div>
 
 
 	<div class="container">
 		<div class="card">
-			<h2>제품 리스트 조회</h2>
+			<h2>製品リストの照会</h2>
 			<form action="productsearch.do" method="get" id="searchForm">
-				<input type="text" name="keyword" placeholder="제품명 검색"
+				<input type="text" name="keyword" placeholder="製品名検索"
 					style="width: 100%; padding: 5px; margin-bottom: 10px;">
 				<button type="submit"
 					style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
-					검색</button>
-				<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
+					検索</button>
 			</form>
 			<table>
 				<tr>
-					<th>품번</th>
-					<th>제품 명</th>
-					<th>제품 설명</th>
-					<th>제품 가격</th>
-					<th>재고</th>
-					<th>구매요청</th>
+					<th>品番</th>
+					<th>製品名</th>
+					<th>製品説明</th>
+					<th>製品価格</th>
+					<th>在庫数</th>
+					<th>購入リクエスト</th>
 				</tr>
 				<c:choose>
 
@@ -142,7 +141,7 @@ th {
 								<td>${product.productQuantity}</td>
 								<td>
 									<button type="button" class="btn btn-success"
-										onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">구매요청</button>
+										onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">購入リクエスト</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -151,8 +150,7 @@ th {
 
 					<c:when test="${not empty keyword and empty searchResult}">
 						<tr>
-							<td colspan="6" style="text-align: center; color: red;">검색
-								결과가 없습니다</td>
+							<td colspan="6" style="text-align: center; color: red;">検索結果がありません</td>
 						</tr>
 					</c:when>
 
@@ -169,15 +167,14 @@ th {
 										<td>${product.productQuantity}</td>
 										<td>
 											<button type="button" class="btn btn-success"
-												onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">구매요청</button>
+												onclick="requestModal('${product.productId}', '${product.productQuantity}','${realCurrentPage}')">購入リクエスト</button>
 										</td>
 									</tr>
 								</c:forEach>
 							</c:when>
 							<c:otherwise>
 								<tr>
-									<td colspan="6" style="text-align: center; color: red;">목록이
-										없습니다</td>
+									<td colspan="6" style="text-align: center; color: red;">リストがありません</td>
 								</tr>
 							</c:otherwise>
 						</c:choose>
@@ -192,7 +189,7 @@ th {
                     <ul class="pagination gap-2">
                         <c:if test="${productPage.startPage > 5}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage - 5}">이전</a>
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage - 5}">前へ</a>
                             </li>
                         </c:if>
 
@@ -204,7 +201,7 @@ th {
 
                         <c:if test="${productPage.endPage < productPage.totalPages}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage + 5}">다음</a>
+                                <a class="page-link rounded-pill" href="list.do?pageNo=${productPage.startPage + 5}">次へ</a>
                             </li>
                         </c:if>
                     </ul>
@@ -226,7 +223,7 @@ th {
 
 
 	<script>
-		// 요청 성공 시 모달 띄우기
+		// リクエスト成功時にモーダルを表示
 	<%if (session.getAttribute("requestSuccess") != null && (boolean) session.getAttribute("requestSuccess")) {%>
 		$(document).ready(function() {
 			$('#RequestSuccessModal').modal('show');
@@ -234,7 +231,7 @@ th {
 	<%session.removeAttribute("requestSuccess");%>
 		
 	<%}%>
-		// 요청 실패 시 모달 띄우기
+		// リクエスト失敗時にモーダルを表示
 	<%if (session.getAttribute("requestFail") != null && (boolean) session.getAttribute("requestFail")) {%>
 		$(document).ready(function() {
 			$('#RequestFailModal').modal('show');
