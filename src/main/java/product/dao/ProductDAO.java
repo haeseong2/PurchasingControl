@@ -21,9 +21,16 @@ public class ProductDAO {
 		DataSource ds = (DataSource) envContext.lookup("jdbc/purchase");
 		return ds.getConnection();
 	}
+	
 
+	/**
+	 * メソッド名: insertProduct
+	 * 役割: 新しい製品情報をデータベースに挿入するメソッド。PRODUCTテーブルに製品名、説明、価格、数量を挿入します。
+	 * 作成者: [キム・ハヌル]
+	 * 作成日: [2025年04月10日]
+	 */
 	public int insertProduct(ProductDTO product) {
-		System.out.println("ProductDAO 접근 성공");
+		System.out.println("ProductDAO insertProduct アクセス成功");
 		int result = 0;
 		String sql = "INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, PRODUCT_DESCRIPTION, PRODUCT_PRICE, PRODUCT_QUANTITY) "
 				+ "VALUES (product_seq.nextVal, ?, ?, ?, ?)";
@@ -40,24 +47,16 @@ public class ProductDAO {
 		return result;
 	}
 
-	/*
-	 * public List<ProductDTO> select() { System.out.println("ProductDAO 접근 성공");
-	 * String sql = "SELECT * FROM PRODUCT"; List<ProductDTO> productList = new
-	 * ArrayList<>();
-	 * 
-	 * try (Connection conn = getConnection(); PreparedStatement pstmt =
-	 * conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){ while
-	 * (rs.next()) { ProductDTO product = new ProductDTO();
-	 * product.setProductId(rs.getString("PRODUCT_ID"));
-	 * product.setProductName(rs.getString("PRODUCT_NAME"));
-	 * product.setProductDescription(rs.getString("PRODUCT_DESCRIPTION"));
-	 * product.setProductPrice(rs.getString("PRODUCT_PRICE"));
-	 * product.setProductQuantity(rs.getString("PRODUCT_QUANTITY"));
-	 * productList.add(product); } } catch (Exception e) { e.printStackTrace(); }
-	 * return productList; }
-	 */
 
+
+	/**
+	 * メソッド名: decreaseQuantity
+	 * 役割: 指定された製品IDの製品数量を減少させるメソッド。指定された数量を減算します。
+	 * 作成者: [キム・ハヌル]
+	 * 作成日: [2025年04月10日]
+	 */
 	public int decreaseQuantity(String productId, String quantity) throws Exception {
+		System.out.println("ProductDAO decreaseQuantity アクセス成功");
 		String sql = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_id = ?";
 
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -69,7 +68,15 @@ public class ProductDAO {
 		}
 	}
 
+	
+	/**
+	 * メソッド名: selectCount
+	 * 役割: PRODUCTテーブルのレコード数をカウントするメソッド。
+	 * 作成者: [キム・ハヌル]
+	 * 作成日: [2025年04月10日]
+	 */
 	public int selectCount() {
+		System.out.println("ProductDAO selectCount アクセス成功");
 		String sql = "SELECT COUNT(*) FROM PRODUCT";
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -81,8 +88,16 @@ public class ProductDAO {
 		}
 	}
 
+	
+	
+	/**
+	 * メソッド名: selectProduct
+	 * 役割: 指定された範囲の製品情報をPRODUCTテーブルから選択してリストとして返すメソッド。
+	 * 作成者: [キム・ハヌル]
+	 * 作成日: [2025年04月10日]
+	 */
 	public List<ProductDTO> selectProduct(int firstRow, int endRow) {
-
+		System.out.println("ProductDAO selectProduct アクセス成功");
 		String sql = "SELECT * FROM (SELECT ROWNUM AS rnum, b.* FROM ("
 				+ "SELECT * FROM PRODUCT ORDER BY PRODUCT_ID DESC) b " + "WHERE ROWNUM <= ?) "
 				+ "WHERE rnum >= ? AND rnum <= ?";

@@ -1,46 +1,56 @@
+<<<<<<< HEAD
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	session="true"%>
 <!-- 회원가입 모달 -->
+=======
+<%@ page contentType="text/html; charset=UTF-8"%>
+<!-- 会員登録 モーダル -->
+>>>>>>> Development
 <div class="modal fade" id="joinModal" tabindex="-1"
 	aria-labelledby="joinModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form action="register.do" method="post">
 				<div class="modal-header">
-					<h5 class="modal-title" id="joinModalLabel">회원가입</h5>
+					<h5 class="modal-title" id="joinModalLabel">会員登録</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 
 				<div class="modal-body">
 					<div class="mb-3">
+<<<<<<< HEAD
 						<label for="id" class="form-label">아이디</label>
 						<div class="input-group">
 							<input type="text" class="form-control" id="id" name="id"
 								required>
 							<button type="button" class="btn btn-secondary" id="checkIdBtn">중복확인</button>
 						</div>
+=======
+						<label for="id" class="form-label">ID</label> <input type="text"
+							class="form-control" id="id" name="id" required>
+>>>>>>> Development
 					</div>
 					<div class="mb-3">
-						<label for="password" class="form-label">비밀번호</label> <input
+						<label for="password" class="form-label">パスワード</label> <input
 							type="password" class="form-control" id="password"
 							name="password" required>
 					</div>
 					<div class="mb-3">
-						<label for="name" class="form-label">이름</label> <input type="text"
+						<label for="name" class="form-label">名前</label> <input type="text"
 							class="form-control" id="name" name="name" required>
 					</div>
 					<div class="mb-3">
-						<label for="email" class="form-label">이메일</label> <input
+						<label for="email" class="form-label">メールアドレス</label> <input
 							type="email" class="form-control" id="email" name="email"
 							required>
 					</div>
 					<div class="mb-3">
-						<label for="role" class="form-label">권한</label> <select
+						<label for="role" class="form-label">権限</label> <select
 							class="form-select" id="role" name="role" required>
-							<option value="">권한을 선택하세요</option>
-							<option value="0">관리자</option>
-							<option value="1">사용자</option>
+							<option value="">権限を選択してください</option>
+							<option value="0">管理者</option>
+							<option value="1">ユーザー</option>
 						</select>
 					</div>
 
@@ -56,29 +66,29 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">가입하기</button>
+					<button type="submit" class="btn btn-primary">登録する</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 
-<!-- 회원가입 성공 모달 -->
+<!-- 会員登録成功モーダル -->
 <div class="modal fade" id="registerSuccessModal" tabindex="-1"
 	aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="registerSuccessModalLabel">회원가입 성공</h5>
+				<h5 class="modal-title" id="registerSuccessModalLabel">会員登録成功</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="닫기"></button>
 			</div>
 			<div class="modal-body">
-				<p>회원가입이 성공적으로 완료되었습니다!</p>
+				<p>会員登録が正常に完了しました！</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary"
-					data-bs-dismiss="modal">확인</button>
+					data-bs-dismiss="modal">確認</button>
 			</div>
 		</div>
 	</div>

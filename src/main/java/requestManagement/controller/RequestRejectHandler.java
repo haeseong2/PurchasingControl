@@ -14,7 +14,7 @@ public class RequestRejectHandler implements CommandHandler {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("RequestRejectHandler 접근 성공");
+        System.out.println("RequestRejectHandler アクセス成功");
         request.setCharacterEncoding("UTF-8");
 
         String requestId = request.getParameter("requestId");
@@ -23,16 +23,16 @@ public class RequestRejectHandler implements CommandHandler {
         System.out.println("requestIdHidden : " + rejectReason);
         
         if (requestId == null || requestId.isEmpty()) {
-            request.setAttribute("error", "잘못된 요청입니다.");
+            request.setAttribute("error", "不正なリクエストです.");
             return "/error.jsp";
         }
 
         RequestDAO dao = new RequestDAO();
-        int rejected = dao.rejectRequest(requestId, rejectReason); // ✅ 수정된 부분
+        int rejected = dao.rejectRequest(requestId, rejectReason); 
         System.out.println("rejected : " +  rejected);
         
         if (rejected == 1) {
-            System.out.println("요청 반려 성공");
+            System.out.println("リクエストの却下が成功");
         
             String pageNoStr = request.getParameter("pageNo");
             
@@ -60,14 +60,12 @@ public class RequestRejectHandler implements CommandHandler {
             }
             response.sendRedirect(redirectUrl);
             
-            
-			/* response.sendRedirect("requestAdmin.do?pageNo=" + pageNo); */
             return null;
         } else {
-            System.out.println("요청 반려 실패");
-            request.setAttribute("error", "요청 반려에 실패했습니다");
+            System.out.println("リクエストの却下が失敗");
+            request.setAttribute("error", "リクエストの却下に失敗しました。");
         }
 
-        return "/WEB-INF/requestManagement/PurchaseAdminRequest.jsp"; // ✅ 슬래시 빠져 있었음
+        return "/WEB-INF/requestManagement/PurchaseAdminRequest.jsp"; 
     }
 }

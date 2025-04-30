@@ -1,21 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%-- <c:choose>
-  <c:when test="${not empty param.keyword}">
-    <!-- 검색 결과 화면인 경우 -->
-    <c:set var="fullUrl" value="${pageContext.request.contextPath}/productsearch.do?keyword=${param.keyword}" />
-  </c:when>
-  <c:otherwise>
-    <!-- 일반 제품 목록 화면인 경우 -->
-    <c:set var="fullUrl" value="${pageContext.request.contextPath}/list.do?pageNo=${currentPage}" />
-  </c:otherwise>
-</c:choose> --%>
-
-
-
-<!-- 구매요청 모달 -->
+<!-- 購入リクエストモーダル -->
 <div class="modal fade" id="requestModal" tabindex="-1"
 	aria-labelledby="joinModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -24,18 +10,18 @@
 			<%-- <form id="reqForm" action="${reqUrl}" method="post"> --%>
 				<form id="reqForm" action="${pageContext.request.contextPath}/request.do" method="post">
 				<div class="modal-header">
-					<h5 class="modal-title" id="joinModalLabel">구매 요청</h5>
+					<h5 class="modal-title" id="joinModalLabel">購入リクエスト</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="mb-3">
-						<label for="quantity" class="form-label">수량</label> <input
+						<label for="quantity" class="form-label">数量</label> <input
 							type="number" class="form-control" id="quantity" name="quantity"
 							required>
 					</div>
 					<div class="mb-3">
-						<label for="reason" class="form-label">요청 사유</label>
+						<label for="reason" class="form-label">リクエスト理由</label>
 						<textarea class="form-control" id="reason" name="reason" rows="3"
 							required></textarea>
 					</div>
@@ -47,46 +33,46 @@
 					id="originalUrlHidden" name="originalUrl" value="${fullUrl}" />
 
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary">요청하기</button>
+					<button type="submit" class="btn btn-primary">リクエストする</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
 
-<!-- 요청 성공 모달 -->
+<!-- リクエスト成功モーダル -->
 <div class="modal fade" id="RequestSuccessModal" tabindex="-1"
 	aria-labelledby="RequestSuccessModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="requestSuccessModalLabel">요청 성공</h5>
+				<h5 class="modal-title" id="requestSuccessModalLabel">リクエスト成功</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">요청이 확인되었습니다.</div>
+			<div class="modal-body">リクエストが確認されました。</div>
 			<div class="modal-footer">
-				<a href="requestcheck.do" class="btn btn-primary">내 구매 요청 목록</a>
-				<button type="button" class="btn btn-secondary" id="requestSuccessCloseBtn">닫기</button>
+				<a href="requestcheck.do" class="btn btn-primary">私の購入リクエストリスト</a>
+				<button type="button" class="btn btn-secondary" id="requestSuccessCloseBtn">閉じる</button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- 요청 실패 모달 -->
+<!-- リクエスト失敗モーダル -->
 <div class="modal fade" id="RequestFailModal" tabindex="-1"
 	aria-labelledby="RequestFailModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="requestFailModalLabel">요청 실패</h5>
+				<h5 class="modal-title" id="requestFailModalLabel">リクエスト失敗</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">요청이 실패하였습니다. 다시 확인하여 주십시오.</div>
+			<div class="modal-body">リクエストが失敗しました。再度確認してください。</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">닫기</button>
+					data-bs-dismiss="modal">閉じる</button>
 			</div>
 		</div>
 	</div>
