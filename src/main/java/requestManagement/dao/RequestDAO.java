@@ -22,9 +22,14 @@ public class RequestDAO {
 	}
 	
 	
-	// 요청 테이블 인서트 작업
+	/**
+	 * メソッド名: insertRequest
+	 * 役割: 購入リクエストテーブル（Purchase_Request）に新しいリクエスト情報を挿入する。
+	 * 作成者: [イ·グァンフン]
+	 * 作成日: [作成日]
+	 */
 	public int insertRequest(RequestDTO request) {
-		System.out.println("RequestDAO insertRequest 접근 성공");
+		System.out.println("RequestDAO insertRequest アクセス成功");
 		int result = 0;
 		String sql = "INSERT INTO PURCHASE_REQUEST (REQUEST_ID, USER_ID, PRODUCT_ID, REQUEST_QUANTITY, REQUEST_DATE, REQUEST_STATUS, REQUEST_REASON) "
 				+ "VALUES (REQ_SEQ.nextVal, ?, ?, ?, SYSDATE, ?, ?)";
@@ -43,7 +48,14 @@ public class RequestDAO {
 		return result;
 	}
 	
+	/**
+	 * メソッド名: selectCount
+	 * 役割: 指定されたユーザーIDに基づいて、購入リクエストテーブル（PURCHASE_REQUEST）内の該当リクエストの件数を取得する。
+	 * 作成者: [イ·グァンフン]
+	 * 作成日: [作成日]
+	 */
     public int selectCount(String id) {
+		System.out.println("RequestDAO selectCount アクセス成功");
         String sql = "SELECT COUNT(*) FROM PURCHASE_REQUEST WHERE USER_ID = ?";
         try (Connection conn = getConnection();
 	             PreparedStatement pstmt = conn.prepareStatement(sql); 
@@ -57,7 +69,14 @@ public class RequestDAO {
 		}
     }
 
+    /**
+     * メソッド名: selectAllCount
+     * 役割: 購入リクエストテーブル（PURCHASE_REQUEST）のリクエストステータスが '0' のすべてのリクエストの件数を取得する。
+     * 作成者: [イ·グァンフン]
+     * 作成日: [作成日]
+     */
     public int selectAllCount() {
+		System.out.println("RequestDAO selectAllCount アクセス成功");
         String sql = "SELECT COUNT(*) FROM PURCHASE_REQUEST WHERE REQUEST_STATUS = '0'";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -69,9 +88,14 @@ public class RequestDAO {
         }
     }
     
-	//요청확인
+    /**
+     * メソッド名: requestCheck
+     * 役割: 指定されたユーザーIDに基づいて、購入リクエスト情報をページネーションを使って取得する。
+     * 作成者: [チェ・ジェヨン]
+     * 作成日: [2025年０４月13日］
+     * */
 	public List<RequestDTO> requestCheck(String id, int startRow, int endRow) throws Exception {
-	    System.out.println("RequestDAO requestCheck 접근 성공");
+	    System.out.println("RequestDAO requestCheck アクセス成功");
 	    String sql = "SELECT * FROM ( " +
 	    	    "  SELECT ROWNUM AS rnum, a.* FROM ( " +
 	    	    "    SELECT UI.USER_NAME, PR.PRODUCT_ID, P.PRODUCT_NAME, PR.REQUEST_QUANTITY, " +
@@ -81,7 +105,7 @@ public class RequestDAO {
 	    	    "    INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
 	    	    "    INNER JOIN PRODUCT P ON P.PRODUCT_ID = PR.PRODUCT_ID " +
 	    	    "    WHERE PR.USER_ID = ? " +
-	    	    "    ORDER BY PR.REQUEST_DATE DESC " +  // 정렬 기준은 필요에 따라 수정
+	    	    "    ORDER BY PR.REQUEST_DATE DESC " +  
 	    	    "  ) a WHERE ROWNUM <= ? " +  // endRow
 	    	    ") WHERE rnum >= ?";  
 	    List<RequestDTO> requestList = new ArrayList<>();
@@ -108,7 +132,7 @@ public class RequestDAO {
 	                requestList.add(req);
 	            }
 	        } catch (Exception e) {
-	            e.printStackTrace(); // 예외 처리
+	            e.printStackTrace(); 
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -118,9 +142,14 @@ public class RequestDAO {
 	    return requestList;
 	}
 
-	//요청 승인
+	/**
+	 * メソッド名: adminCheck
+	 * 役割: 管理者が確認できる、購入リクエストの一覧をページネーションを使って取得する。リクエストステータスが「0」のものに限る。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年０４月13日]
+	 */
 	public List<RequestDTO> adminCheck(int startRow, int endRow) {
-	    System.out.println("RequestDAO adminCheck 접근 성공");
+	    System.out.println("RequestDAO adminCheck アクセス成功");
 	    String sql = 
 	        "SELECT * FROM ( " +
 	        "  SELECT ROWNUM AS rnum, a.* FROM ( " +
@@ -140,7 +169,6 @@ public class RequestDAO {
 	    try (Connection conn = getConnection(); 
 	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-	        // 페이징 파라미터 설정
 	        pstmt.setInt(1, endRow);  
 	        pstmt.setInt(2, startRow);
 
@@ -165,9 +193,15 @@ public class RequestDAO {
 	    return adminList;
 	}
 
-	//승인 확인
+	
+	/**
+	 * メソッド名: approvalCheck
+	 * 役割: 指定されたリクエストIDに対して、購入リクエストのステータスを「1」に更新する（承認処理）。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年０４月13日]
+	 */
 	public int approvalCheck(String requestId) {
-		System.out.println("approvalCheck 접근 성공");
+		System.out.println("approvalCheck アクセス成功");
 		String sql = "UPDATE Purchase_Request SET request_status = '1' WHERE request_id = ?";
 		int result = 0;
 
@@ -183,8 +217,14 @@ public class RequestDAO {
 	}
 
 	
+	/**
+	 * メソッド名: getRequestById
+	 * 役割: 指定されたリクエストIDに基づいて購入リクエストの詳細を取得する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年０４月13日]
+	 */
 	public RequestDTO getRequestById(String requestId) {
-		System.out.println("getRequestById 접근 성공");
+		System.out.println("getRequestById アクセス成功");
 		String sql = "SELECT * FROM purchase_request WHERE request_id = ?";
 	    RequestDTO dto = null;
 
@@ -209,10 +249,16 @@ public class RequestDAO {
 
 	    return dto;
 	}
+	
 
-	//정산 요청
+	/**
+	 * メソッド名: settleupdate
+	 * 役割: 指定されたリクエストIDに基づいて、リクエストのステータスを'1'に更新する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int settleupdate(String requestId) {
-		System.out.println("settleupdate 접근 성공");
+		System.out.println("settleupdate アクセス成功");
 		String sql = "UPDATE PURCHASE_REQUEST SET request_status ='1' WHERE request_id = ?";
 		
 		int result = 0;
@@ -228,9 +274,15 @@ public class RequestDAO {
 			return result;
 		}
 
-	//정산
+	
+	/**
+	 * メソッド名: settleInsert
+	 * 役割: 指定されたリクエストID、ユーザーID、リクエスト数量に基づいて、購入決済情報をデータベースに挿入する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int settleInsert(String requestId, String user, String requestQuantity) {
-		System.out.println("settleInsert 접근 성공");
+		System.out.println("settleInsert アクセス成功");
 	    String sql = "INSERT INTO Purchase_Settlement \r\n"
 	            + "(settlement_id, request_id, user_id, total_amount, settlement_date, settlement_status) \r\n"
 	            + "VALUES (SET_SEQ.nextVal, ?, ?, ?, SYSDATE, 1)";
@@ -248,9 +300,15 @@ public class RequestDAO {
 		return result;
 		}
 
-	//정산 성공
+	
+	/**
+	 * メソッド名: completeSettle
+	 * 役割: 指定されたリクエストIDに基づいて、購入リクエストのステータスを「3」に更新する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int completeSettle(String requestId) {
-		System.out.println("completeSettle 접근 성공");
+		System.out.println("completeSettle アクセス成功");
 		String sql = "UPDATE PURCHASE_REQUEST SET request_status = '3' WHERE request_id = ?";
 		int result = 0;
 		try (Connection conn = getConnection(); 
@@ -259,11 +317,11 @@ public class RequestDAO {
 				pstmt.setString(1, requestId);
 				result = pstmt.executeUpdate();
 				
-				//업데이트 성공 실패 콘솔 출력
+				//update 成功失敗コンソール出力
 				if(result > 0) {
-					System.out.println("request_status가 3으로 업데이트 됨");
+					System.out.println("request_statusが3にupdateされました");
 				} else {
-					System.out.println("request_status 업데이트 실패. requestId : " + requestId);
+					System.out.println("request_statusのupdateに失敗しました。requestId : " + requestId);
 				}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,9 +329,14 @@ public class RequestDAO {
 			return result;
 		}
 
-	//거절요청
+	/**
+	 * メソッド名: rejectRequest
+	 * 役割: 指定されたリクエストIDに基づいて、購入リクエストのステータスを「2」に更新し、拒否理由を設定する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int rejectRequest(String requestId, String rejectReason) {
-		System.out.println("rejectRequest 접근 성공");
+		System.out.println("rejectRequest アクセス成功");
 		String sql = "UPDATE PURCHASE_REQUEST SET REQUEST_STATUS = '2', REJECT_REASON = ? WHERE REQUEST_ID = ?";
 		
 		int reject = 0;
@@ -292,8 +355,14 @@ public class RequestDAO {
 	}
 
 
+	/**
+	 * メソッド名: resendUpdate
+	 * 役割: 指定されたリクエストIDに基づいて、購入リクエストのステータスを「0」に更新し、リクエスト数量と理由を再設定する。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int resendUpdate(String requestId, String quantity, String reason) {
-	    System.out.println("resendupdate 접근 성공");
+	    System.out.println("resendupdate アクセス成功");
 	    String sql = "UPDATE PURCHASE_REQUEST SET REQUEST_STATUS = '0', request_quantity =?, request_reason =? WHERE REQUEST_ID = ?";
 	    int result = 0;
 
@@ -305,7 +374,7 @@ public class RequestDAO {
 	        pstmt.setString(3, requestId);
 	        result = pstmt.executeUpdate();
 
-	        System.out.println("update result: " + result);  // 결과 출력
+	        System.out.println("update result: " + result); 
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -315,8 +384,14 @@ public class RequestDAO {
 	}
 
 
+	/**
+	 * メソッド名: checkResultSearch
+	 * 役割: ユーザーIDとキーワードに基づいて、ユーザーの購入リクエストを検索し、リクエスト情報をリストとして返す。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public List<RequestDTO> checkResultSearch(String id, String keyword) throws Exception {
-		System.out.println("RequestDAO checkResultSearch 접근 성공");
+		System.out.println("RequestDAO checkResultSearch アクセス成功");
 	    String sql = "SELECT UI.USER_NAME, PR.PRODUCT_ID, P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, PR.REQUEST_STATUS, PR.REQUEST_REASON, PR.REJECT_REASON, PR.REQUEST_ID, PR.USER_ID " +
 	                 "FROM PURCHASE_REQUEST PR " +
 	                 "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
@@ -356,8 +431,17 @@ public class RequestDAO {
 	    return requestList;
 	}
 	
+	
+	
+	/**
+	 * メソッド名: checkResultSearch
+	 * 役割: ユーザーIDとキーワードに基づいて、購入リクエストを検索し、指定されたページ範囲のリクエスト情報を返す。
+	 *       このメソッドはページング機能をサポートしており、リクエストの検索結果を指定された行数の範囲で返します。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public List<RequestDTO> checkResultSearch(String id, String keyword, int startRow, int endRow) throws Exception {
-	    System.out.println("RequestDAO checkResultSearch(페이징) 접근 성공");
+	    System.out.println("RequestDAO checkResultSearch(ページング) アクセス成功");
 	    String sql = "SELECT * FROM ( " +
 	                 "  SELECT ROWNUM AS rnum, a.* FROM ( " +
 	                 "    SELECT UI.USER_NAME, PR.PRODUCT_ID, P.PRODUCT_NAME, PR.REQUEST_QUANTITY, PR.REQUEST_DATE, " +
@@ -401,7 +485,16 @@ public class RequestDAO {
 	    return requestList;
 	}
 
+	
+	/**
+	 * メソッド名: selectCountByKeyword
+	 * 役割: 指定されたキーワードに基づいて、購入リクエストの件数を検索します。
+	 *       ユーザー名がキーワードに部分一致するリクエストを対象にし、リクエスト状態が「0」（未処理）のものをカウントします。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int selectCountByKeyword(String keyword) {
+		System.out.println("RequestDAO selectCountByKeyword アクセス成功");
 	    String sql = "SELECT COUNT(*) FROM PURCHASE_REQUEST PR " +
 	                 "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
 	                 "WHERE PR.REQUEST_STATUS = '0' AND UI.USER_NAME LIKE ?";
@@ -420,8 +513,16 @@ public class RequestDAO {
 	    return 0;
 	}
 	
-	// (구매요청 목록) 로그인한 사용자 id + 이름 검색 키워드로 카운트
+	
+	/**
+	 * メソッド名: selectCountByUserAndKeyword
+	 * 役割: 指定されたユーザーIDとキーワードに基づいて、購入リクエストの件数を検索します。
+	 *       ユーザーIDが一致し、かつユーザー名がキーワードに部分一致するリクエストをカウントします。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public int selectCountByUserAndKeyword(String id, String keyword) {
+		System.out.println("RequestDAO selectCountByUserAndKeyword アクセス成功");
 	    String sql = "SELECT COUNT(*) FROM PURCHASE_REQUEST PR " +
 	                 "INNER JOIN USER_INFO UI ON UI.USER_ID = PR.USER_ID " +
 	                 "WHERE PR.USER_ID = ? " +
@@ -441,8 +542,18 @@ public class RequestDAO {
 	    return 0;
 	}
 
+	
+	
+	/**
+	 * メソッド名: adminCheckSearch
+	 * 役割: 管理者が購入リクエストを検索するためのメソッド。検索キーワードとページングに基づいて、購入リクエストのリストを返す。
+	 *       ユーザー名がキーワードに部分一致し、リクエストステータスが「0」である購入リクエストを検索。
+	 *       結果はページングされ、開始行と終了行を指定して結果を取得します。
+	 * 作成者: [チェ・ジェヨン]
+	 * 作成日: [2025年04月13日]
+	 */
 	public List<RequestDTO> adminCheckSearch(String keyword, int startRow, int endRow) {
-	    System.out.println("RequestDAO adminCheckSearch(페이징 포함) 접근 성공");
+	    System.out.println("RequestDAO adminCheckSearch(ページング) アクセス成功");
 	    String sql = 
 	        "SELECT * FROM ( " +
 	        "  SELECT ROWNUM AS rnum, a.* FROM ( " +

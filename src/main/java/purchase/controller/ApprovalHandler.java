@@ -14,7 +14,7 @@ public class ApprovalHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("ApprovalHandler 접근 성공");
+		System.out.println("ApprovalHandler アクセス成功");
 
 		String requestId = request.getParameter("requestId");
 		System.out.println("requestId : " + requestId);
@@ -23,7 +23,7 @@ public class ApprovalHandler implements CommandHandler {
 		int result 	   = dao.approvalCheck(requestId);
 
 		if (result == 1) {
-			System.out.println("요청 승인 성공");
+			System.out.println("リクエスト承認成功");
 			
 			String pageNoStr = request.getParameter("pageNo");
 			
@@ -55,7 +55,6 @@ public class ApprovalHandler implements CommandHandler {
                 }
                 response.sendRedirect(redirectUrl);
 				
-                /*response.sendRedirect("requestAdmin.do?pageNo=" + pageNo);*/
 	            return null;
 			}else {
 				request.setAttribute("approveSuccess", false);

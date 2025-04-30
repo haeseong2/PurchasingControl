@@ -18,24 +18,24 @@ public class ProductRegisterHandler implements CommandHandler {
         String productQuantity 	    = request.getParameter("productQuantity");
         String productDescription   = request.getParameter("productDescription"); 
 		
-		// ProductDTO 객체 생성
+		// ProductDTO オブジェクトを作成
 		ProductDTO product = new ProductDTO();
 		product.setProductName(productName);
 		product.setProductDescription(productDescription);
 		product.setProductPrice(productPrice);
 		product.setProductQuantity(productQuantity);
 
-		// ProductDAO를 통해 데이터베이스에 추가
+		// ProductDAOを使用してデータベースに追加
 		int result = productDAO.insertProduct(product);
 		System.out.println("result : " + result);
 
-		// 결과에 따라 성공적으로 추가된 후 제품 목록 페이지로 리다이렉트
+		// 結果に応じて、成功した場合は製品一覧ページにリダイレクト
 		if (result > 0) {
 			request.setAttribute("productRegisterSuccess", true);
 		} else {
-			// 실패시 에러 메시지를 설정하고 등록 페이지로 이동
+			// 失敗した場合はエラーメッセージを設定し、登録ページに戻る
 			request.setAttribute("errorMessage", true);
 		}
-		return "/WEB-INF/product/productRegister.jsp"; // 다시 제품 등록 폼으로 돌아감
+		return "/WEB-INF/product/productRegister.jsp"; // 再度製品登録フォームに戻る
 	}
 }

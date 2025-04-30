@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>제품 관리(관리자용)</title>
+<title>製品管理（管理者用）</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -95,41 +95,41 @@ th {
 <body>
 	<div class="container">
 		<div class="card">
-			<h2>제품 상세 및 수정 (관리자 전용)</h2>
+			<h2>製品詳細および編集（管理者専用）</h2>
 			<div class="form-group">
-				<label>제품명:</label> <input type="text" id="productName" value="상품 A"
+				<label>製品名:</label> <input type="text" id="productName" value="상품 A"
 					style="width: 100%; padding: 5px;">
 			</div>
 			<div class="form-group">
-				<label>설명:</label>
-				<textarea id="productDesc" style="width: 100%; padding: 5px;">이 제품은...</textarea>
+				<label>説明:</label>
+				<textarea id="productDesc" style="width: 100%; padding: 5px;">この製品は...</textarea>
 			</div>
 			<div class="form-group">
-				<label>가격:</label> <input type="number" id="productPrice"
+				<label>価格:</label> <input type="number" id="productPrice"
 					value="10000" style="width: 100%; padding: 5px;">
 			</div>
 			<div class="form-group">
-				<label>재고:</label> <input type="number" id="productStock" value="10"
+				<label>在庫:</label> <input type="number" id="productStock" value="10"
 					style="width: 100%; padding: 5px;">
 			</div>
 			<div class="actions">
-				<button class="save" id="saveBtn">저장</button>
-				<button class="delete" id="deleteBtn">삭제</button>
-				<button class="increase" id="increaseStock">재고 +</button>
-				<button class="decrease" id="decreaseStock">재고 -</button>
+				<button class="save" id="saveBtn">保存</button>
+				<button class="delete" id="deleteBtn">削除</button>
+				<button class="increase" id="increaseStock">在庫 +</button>
+				<button class="decrease" id="decreaseStock">在庫 -</button>
 			</div>
 		</div>
 	</div>
 	
 	<script>
 		document.getElementById("saveBtn").onclick = function() {
-			alert("저장되었습니다!");
+			alert("保存されました!");
 			window.location.href = '<c:url value="/product/list.do"/>';
 		};
 
 		document.getElementById("deleteBtn").onclick = function() {
-			if (confirm("정말 삭제하시겠습니까?")) {
-				alert("삭제되었습니다!");
+			if (confirm("本当に削除しますか?")) {
+				alert("削除されました!");
 				window.location.href = '<c:url value="/product/list.do"/>';
 			}
 		};
@@ -144,7 +144,7 @@ th {
 			if (parseInt(stockInput.value) > 0) {
 				stockInput.value = parseInt(stockInput.value) - 1;
 			} else {
-				alert("재고가 없습니다!");
+				alert("在庫がありません!");
 			}
 		};
 	</script>

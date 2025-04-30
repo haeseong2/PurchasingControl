@@ -9,7 +9,7 @@ public class ProductAddHandler implements CommandHandler {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	request.setCharacterEncoding("UTF-8");
-    	System.out.println("productRegister 제품 등록 페이지 접근 성공");
+    	System.out.println("productRegister 製品登録ページへのアクセス成功");
     	
             return "/WEB-INF/product/productRegister.jsp";
         }

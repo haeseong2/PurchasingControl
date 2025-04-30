@@ -21,8 +21,15 @@ public class ProductSearchDAO {
 		return ds.getConnection();
 	}
 
+	
+	/**
+	 * メソッド名: searchProduct
+	 * 役割: 製品名で検索キーワードに一致する製品情報をPRODUCTテーブルから選択してリストとして返すメソッド。
+	 * 作成者: [キム・ハヌル]
+	 * 作成日: [2025年04月10日]
+	 */
 	public List<ProductDTO> searchProduct(String keyword) {
-		System.out.println("ProductSearchDAO 접근 성공");
+		System.out.println("ProductSearchDAO アクセス成功");
 
 		String sql = "SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE ?";
 		List<ProductDTO> productList = new ArrayList<>();

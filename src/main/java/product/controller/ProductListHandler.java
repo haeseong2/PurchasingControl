@@ -35,23 +35,15 @@ public class ProductListHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("ProductListHandler 접근 성공");
+		System.out.println("ProductListHandler アクセス成功");
 		request.setCharacterEncoding("UTF-8");
-		// ProductDAO dao = new ProductDAO();
-
-		// List<ProductDTO> product = dao.selectProduct();
-		// System.out.println("product : " + product);
-
-		// request.setAttribute("product", product);
 
 		String pageNoVal = request.getParameter("pageNo");
 		int pageNo = 1;
 		if (pageNoVal != null && !pageNoVal.isEmpty()) {
 			pageNo = Integer.parseInt(pageNoVal);
 		}
-		/*
-		 * if(pageNoVal != null) { pageNo = Integer.parseInt(pageNoVal); }
-		 */
+
 		ProductPageDTO productPage = this.getProductPage(pageNo);
 		request.setAttribute("productPage", productPage);
 		request.setAttribute("product", productPage.getProductList());
