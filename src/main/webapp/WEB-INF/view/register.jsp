@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-	session="true"%>
-<!-- 회원가입 모달 -->
-=======
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- 会員登録 モーダル -->
->>>>>>> Development
 <div class="modal fade" id="joinModal" tabindex="-1"
 	aria-labelledby="joinModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -16,20 +11,15 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-
 				<div class="modal-body">
 					<div class="mb-3">
-<<<<<<< HEAD
-						<label for="id" class="form-label">아이디</label>
+						<label for="id" class="form-label">ID</label>
 						<div class="input-group">
 							<input type="text" class="form-control" id="id" name="id"
-								required>
-							<button type="button" class="btn btn-secondary" id="checkIdBtn">중복확인</button>
+								value="<c:out value='${enteredId}'/>" required>
+							<button type="button" class="btn btn-outline-secondary"
+								onclick="checkId()">重複確認</button>
 						</div>
-=======
-						<label for="id" class="form-label">ID</label> <input type="text"
-							class="form-control" id="id" name="id" required>
->>>>>>> Development
 					</div>
 					<div class="mb-3">
 						<label for="password" class="form-label">パスワード</label> <input
@@ -53,7 +43,6 @@
 							<option value="1">ユーザー</option>
 						</select>
 					</div>
-
 					<%
 					if (request.getAttribute("error") != null) {
 					%>
@@ -64,7 +53,6 @@
 					}
 					%>
 				</div>
-
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary">登録する</button>
 				</div>
@@ -72,7 +60,6 @@
 		</div>
 	</div>
 </div>
-
 <!-- 会員登録成功モーダル -->
 <div class="modal fade" id="registerSuccessModal" tabindex="-1"
 	aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
@@ -93,3 +80,21 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	function setHiddenId() {
+		document.getElementById("hiddenId").value = document
+				.getElementById("id").value;
+	}
+</script>
+<script>
+	function checkId() {
+		var id = document.getElementById("id").value.trim();
+		if (id === "") {
+			alert("IDを入力してください。");
+			return;
+		}
+		window.location.href = "checkId.do?id=" + encodeURIComponent(id);
+	}
+</script>
+
