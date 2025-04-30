@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>내 구매 요청 내역</title>
+<title>自分の購入リクエスト履歴</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -88,39 +88,39 @@ th {
 </head>
 <body>
 	<div style="position: absolute; top: 20px; right: 20px;">
-		<a href="index.jsp" class="btn btn-primary">시작 페이지로</a>
+		<a href="index.jsp" class="btn btn-primary">ホームに戻る</a>
 		<button class="btn btn-primary" type="button"
 			data-bs-toggle="offcanvas" data-bs-target="#menuCanvas">☰
-			카테고리</button>
+			カテゴリ</button>
 	</div>
 
 	<div class="container">
-		<h2>내 구매 요청 내역</h2>
+		<h2>自分の購入リクエスト履歴</h2>
 		<form action="requestcheck.do" method="get" id="searchForm">
-			<input type="text" name="keyword" placeholder="요청자 검색" value="${param.keyword}"
+			<input type="text" name="keyword" placeholder="申請者を検索" value="${param.keyword}"
 			 style="width: 100%; padding: 5px; margin-bottom: 10px;">
 			<button type="submit"
 				style="width: 100%; padding: 5px; background-color: #4CAF50; color: white; border: none;">
-				검색</button>
+				検索</button>
 			<!-- TODO: 필요한 경우, 여기에 필터 옵션이나 정렬 기능을 넣을 수 있습니다 -->
 		</form>
 		<table>
 			<tr>
-				<th>요청자</th>
-				<th>제품 ID</th>
-				<th>제품명</th>
-				<th>요청 수량</th>
-				<th>요청 일자</th>
+				<th>申請者</th>
+				<th>製品 ID</th>
+				<th>製品名</th>
+				<th>リクエスト数量</th>
+				<th>リクエスト日</th>
 				<c:choose>
 					<c:when
 						test="${not empty checkResult and checkResult[0].requestStatus == '2'}">
-						<th>반려 내용</th>
+						<th>差し戻し内容</th>
 					</c:when>
 					<c:otherwise>
-						<th>요청 내용</th>
+						<th>リクエスト内容</th>
 					</c:otherwise>
 				</c:choose>
-				<th>상태</th>
+				<th>ステータス</th>
 			</tr>
 			<c:choose>
 				<c:when test="${not empty checkResult}">
@@ -141,21 +141,21 @@ th {
 							</c:if>
 
 							<c:if test="${request.requestStatus == '0'}">
-								<td>요청중</td>
+								<td>リクエスト中</td>
 							</c:if>
 
 							<c:if test="${request.requestStatus == '1'}">
 								<td><button class="btn btn-primary"
-										onclick="settle('${request.requestId}','${request.requestQuantity}')">정산요청</button></td>
+										onclick="settle('${request.requestId}','${request.requestQuantity}')">精算リクエスト</button></td>
 							</c:if>
 
 							<c:if test="${request.requestStatus == '2'}">
 								<td><button class="btn btn-primary"
-										onclick="resendRequestModal('${request.requestId}', '${request.requestQuantity}')">재요청</button></td>
+										onclick="resendRequestModal('${request.requestId}', '${request.requestQuantity}')">再リクエスト</button></td>
 							</c:if>
 
 							<c:if test="${request.requestStatus == '3'}">
-								<td>정산 완료</td>
+								<td>精算完了</td>
 							</c:if>
 
 						</tr>
@@ -163,8 +163,7 @@ th {
 				</c:when>
 				<c:otherwise>
 					<tr>
-						<td colspan="7" style="text-align: center; color: red;">목록이
-							없습니다</td>
+						<td colspan="7" style="text-align: center; color: red;">リストがありません</td>
 					</tr>
 				</c:otherwise>
 			</c:choose>
@@ -177,7 +176,7 @@ th {
                     <ul class="pagination gap-2">
                         <c:if test="${requestPage.startPage > 5}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">이전</a>
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage - 5}&keyword=${param.keyword}">前へ</a>
                             </li>
                         </c:if>
 
@@ -189,7 +188,7 @@ th {
 
                         <c:if test="${requestPage.endPage < requestPage.totalPages}">
                             <li class="page-item">
-                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">다음</a>
+                                <a class="page-link rounded-pill" href="requestcheck.do?pageNo=${requestPage.startPage + 5}&keyword=${param.keyword}">次へ</a>
                             </li>
                         </c:if>
                     </ul>

@@ -51,31 +51,19 @@ public class RequestCheckHandler implements CommandHandler {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("RequestCheckHandler 접근 성공");
+        System.out.println("RequestCheckHandler アクセス成功");
         request.setCharacterEncoding("UTF-8");
 
         String id = (String) request.getSession().getAttribute("user");
         String keyword = request.getParameter("keyword");
-        System.out.println("로그인한 사용자 ID: " + id);
-        System.out.println("검색할 요청자 이름 : " + keyword);
+        System.out.println("ログイン中のユーザー ID: " + id);
+        System.out.println("検索する申請者の名前 : " + keyword);
 
         String pageNoVal = request.getParameter("pageNo");
         int pageNo = 1;
         if (pageNoVal != null && !pageNoVal.isEmpty()) {
             pageNo = Integer.parseInt(pageNoVal);
         }
-
-		/*
-		 * if (keyword != null && !keyword.trim().isEmpty()) { // 검색어가 있을 때는 기존 검색 메서드
-		 * 호출 (페이징 없이 전체 검색 결과) List<RequestDTO> checkResultSearch =
-		 * dao.checkResultSearch(id, keyword); System.out.println("checkResultSearch : "
-		 * + checkResultSearch); request.setAttribute("checkResult", checkResultSearch);
-		 * // 페이징 객체는 빈 리스트로 세팅하거나 null로 처리해도 무방 request.setAttribute("requestPage", new
-		 * RequestPageDTO(checkResultSearch.size(), 1, size, checkResultSearch)); } else
-		 * { // 검색어 없을 때만 페이징 처리 RequestPageDTO requestPage = this.getRequestPage(id,
-		 * pageNo); request.setAttribute("requestPage", requestPage);
-		 * request.setAttribute("checkResult", requestPage.getRequestList()); }
-		 */
         
         if (keyword != null && !keyword.trim().isEmpty()) {
             RequestPageDTO requestPage = this.getRequestPageByKeyword(id, keyword, pageNo);

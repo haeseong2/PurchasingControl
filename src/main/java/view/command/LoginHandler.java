@@ -24,16 +24,16 @@ public class LoginHandler implements CommandHandler {
         
         if (success && user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", username);  // 사용자 아이디 저장
-            session.setAttribute("userRole", user.getUserStatus());  // "0" or "1"을 int로 변환하여 저장
+            session.setAttribute("user", username);  // ユーザーIDを保存
+            session.setAttribute("userRole", user.getUserStatus());  // "0" または "1" を int 型に変換して保存
 
             request.setAttribute("loginSuccess", true);
-            return "index.jsp";
+            return "index.jsp"; // ログイン成功後、index.jspに遷移
         } else {
-            // 로그인 실패 시 로그인 실패 메시지 전달
+            // ログイン失敗時にエラーメッセージを表示
             request.setAttribute("loginFail", true);
             request.setAttribute("error", "아이디 또는 비밀번호가 틀립니다");
-            return "index.jsp"; // 로그인 실패 후 index 페이지로 리다이렉트
+            return "index.jsp"; // ログイン失敗後、indexページにリダイレクト
         }
     }
 }

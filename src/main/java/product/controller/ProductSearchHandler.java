@@ -13,19 +13,19 @@ import view.command.CommandHandler;
 public class ProductSearchHandler implements CommandHandler {
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("ProductSearchHandler 접근 성공");
+		System.out.println("ProductSearchHandler アクセス成功");
 		request.setCharacterEncoding("UTF-8");
 
-		// 입력 값 받기
+		// 入力値を取得
 		String keyword = request.getParameter("keyword");
 
 		List<ProductDTO> searchResult = null;
 
 		if (keyword == null || keyword.trim().isEmpty()) {
-			// 검색어가 없을 때 빈 리스트 전달
+			// 検索語がない場合、空のリストを返す
 			searchResult = new ArrayList<>();
 		} else {
-			// 검색어가 있을 때 검색 결과
+			// 検索語がある場合、検索結果を取得
 			ProductSearchDAO dao = new ProductSearchDAO();
 			searchResult = dao.searchProduct(keyword);
 		}
@@ -33,7 +33,7 @@ public class ProductSearchHandler implements CommandHandler {
 		System.out.println("result : " + searchResult);
 		System.out.println("keyword : " + keyword);
 
-		// searchResult를 JSP로 전달
+		// searchResultをJSPに渡す
 		request.setAttribute("searchResult", searchResult);
 
 		return "/WEB-INF/product/productList.jsp";
